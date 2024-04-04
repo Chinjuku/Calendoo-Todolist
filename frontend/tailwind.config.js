@@ -28,6 +28,7 @@ export const theme = {
       secondary: "#424874",
       secondary1: "#A6B1E1",
       hover: "#E9E2F4",
+      hover1: "#E0D8ED"
     },
     borderRadius: {
       lg: "var(--radius)",
