@@ -4,17 +4,7 @@ import { useEffect } from 'react';
 import { Link, Events, animateScroll as scroll, scrollSpy } from 'react-scroll';
 
 const Navbar = () => {
-//   const [activeSection, setActiveSection] = useState("home");
   useEffect(() => {
-    // Registering the 'begin' event and logging it to the console when triggered.
-    // Events.scrollEvent.register('begin', (to, element) => {
-    //     console.log('begin', to, element);
-    // });
-
-    // // Registering the 'end' event and logging it to the console when triggered.
-    // Events.scrollEvent.register('end', (to, element) => {
-    //     console.log('end', to, element);
-    // });
     scrollSpy.update();
     return () => {
         Events.scrollEvent.remove('begin');
@@ -31,7 +21,6 @@ const Navbar = () => {
 //   const activeLinkStyles = {
 //     borderBottom: "3px solid blue", // Change to your desired underline color
 //   };
-
   return (
     <div className='laptop:h-[90px] w-full bg-secondary px-[67px] fixed z-[100] flex items-center justify-between'>
         <div className='text-[32px] font-extrabold text-primary'>

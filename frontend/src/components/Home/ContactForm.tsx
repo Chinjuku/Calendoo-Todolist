@@ -2,9 +2,8 @@
 
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
-import { z } from "zod"
-
 import { Button } from "@/components/ui/button"
+import { z } from "zod"
 import {
   Form,
   FormControl,
@@ -15,24 +14,11 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-
-const formSchema = z.object({
-  username: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
-  }),
-  email: z.string().email("This is not a valid email."),
-  location: z.string().min(15, {
-    message: "Location must be at least 15 characters.",
-  }),
-  messages: z.string().min(10, {
-    message: "Message must be at least 10 characters.",
-  }),
-  
-})
+import { contactSchema } from "@/composables/Validation"
 
 export function ContactForm() {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof contactSchema>>({
+    resolver: zodResolver(contactSchema),
     defaultValues: {
       username: "",
       email: "",
@@ -40,7 +26,7 @@ export function ContactForm() {
       messages: "",
     },
   })
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  function onSubmit(values: z.infer<typeof contactSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     console.log(values)
