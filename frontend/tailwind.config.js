@@ -1,10 +1,12 @@
 /** @type {import('tailwindcss').Config} */
+import flowbite from "flowbite-react/tailwind";
 export const darkMode = ["class"];
 export const content = [
   './pages/**/*.{ts,tsx}',
   './components/**/*.{ts,tsx}',
   './app/**/*.{ts,tsx}',
   './src/**/*.{ts,tsx}',
+  flowbite.content(),
 ];
 export const prefix = "";
 export const theme = {
@@ -80,7 +82,7 @@ export const theme = {
 };
 
 // eslint-disable-next-line no-undef
-export const plugins = [require("daisyui"), require("tailwindcss-animate")];
+export const plugins = [require("daisyui"), require("tailwindcss-animate"), flowbite.plugin(),];
 export const daisyui = {
   themes: [
     {

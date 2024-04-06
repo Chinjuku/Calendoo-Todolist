@@ -15,6 +15,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { contactSchema } from "@/composables/Validation"
+import { toast } from "../ui/use-toast"
 
 export function ContactForm() {
   const form = useForm<z.infer<typeof contactSchema>>({
@@ -27,9 +28,11 @@ export function ContactForm() {
     },
   })
   function onSubmit(values: z.infer<typeof contactSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
     console.log(values)
+    toast({
+      variant: "success",
+      title: "You send contact message Successfully!",
+    });
   }
 
   return (
