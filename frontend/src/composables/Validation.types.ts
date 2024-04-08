@@ -14,3 +14,7 @@ export type AddNoteData = {
     piority: number;
 }
 
+export interface AddBoardData {
+    boardname: string
+}
+

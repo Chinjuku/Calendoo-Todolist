@@ -1,7 +1,4 @@
 'use client';
-// import { useState } from 'react'
-// import reactLogo from './assets/react.svg'
-// import viteLogo from '/vite.svg' (public)
 import Navbar from "../components/Home/Navbar"
 import Home from "../components/Home/Home"
 import About from "../components/Home/About"
@@ -10,7 +7,6 @@ import { Element } from 'react-scroll';
 import { Toaster } from "@/components/ui/toaster";
 
 function App() {
-
   return (
     <div className='bg-primary1 h-full w-full'>
       <Toaster />

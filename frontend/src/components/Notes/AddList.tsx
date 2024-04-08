@@ -41,7 +41,7 @@ const AddList = (props: BooleanCheck) => {
     });
   };
   return (
-    <div className="absolute bottom-[150px] left-[250px] h-[333px] w-[230px] z-10 bg-secondary text-white py-6 px-5 rounded-[20px]">
+    <div className="absolute bottom-[150px] left-[250px] max-h-[333px] w-[230px] z-10 bg-secondary text-white py-6 pb-10 px-5 rounded-[20px]">
       <button
         className="absolute right-4 top-[6px] p-1 font-extrabold"
         onClick={() => props.handleClick(false)}

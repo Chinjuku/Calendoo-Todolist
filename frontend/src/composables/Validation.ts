@@ -1,7 +1,7 @@
 import { ZodType, z } from "zod"
-import { AddNoteData, ListData } from "./Validation.types";
+import { AddNoteData, ListData, AddBoardData } from "./Validation.types";
 
-// @/Home/ContactForm.tsx
+// @/components/Home/ContactForm.tsx
 export const contactSchema = z.object({
     username: z.string().min(2, {
       message: "Username must be at least 2 characters.",
@@ -15,7 +15,7 @@ export const contactSchema = z.object({
     }),
 })
 
-// @/pages/Project.tsx
+// @/components/pages/Project.tsx
 export const projectSchema = z.object({
     project: z.string().min(2, {
       message: "Username must be at least 2 characters.",
@@ -25,7 +25,7 @@ export const projectSchema = z.object({
       }),
 })
 
-// @/Notes/AddList.tsx
+// @/components/Notes/AddList.tsx
 export const ListSchema: ZodType<ListData> = z.object({
     // อาจจะตรวจสอบว่าชื่อ list ตรงกับใน database มั้ย
     namelist: z
@@ -38,7 +38,7 @@ export const ListSchema: ZodType<ListData> = z.object({
       }),
 });
 
-// @/Notes/AddNote.tsx
+// @/components/Notes/AddNote.tsx
 export const AddNoteSchema: ZodType<AddNoteData> = z.object({
     title: z.string(
         { required_error: "Please require title." }
@@ -58,3 +58,10 @@ export const AddNoteSchema: ZodType<AddNoteData> = z.object({
       required_error: "Please select Piority.",
     })
 });
+
+// @/components/Project/AddBoard.tsx
+export const addBoardSchema: ZodType<AddBoardData> = z.object({
+  boardname: z.string().min(2, {
+    message: "Name board must be at least 2 characters.",
+  }),
+})

@@ -10,7 +10,6 @@ import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
-import Select from './pages/Select.tsx'
 
 const router = createBrowserRouter([
   {
@@ -31,11 +30,6 @@ const router = createBrowserRouter([
   {
     path: "/project/:nameproject",
     element: <ProjectTasks />,
-    errorElement: <Error />,
-  },
-  {
-    path: "/select",
-    element: <Select />,
     errorElement: <Error />,
   },
 ]);
