@@ -10,7 +10,7 @@ export const contactSchema = z.object({
     location: z.string().min(15, {
       message: "Location must be at least 15 characters.",
     }),
-    messages: z.string().min(10, {
+    message: z.string().min(10, {
       message: "Message must be at least 10 characters.",
     }),
 })

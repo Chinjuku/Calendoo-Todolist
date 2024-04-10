@@ -86,7 +86,7 @@ export const Tasks = () => {
 const MainWrapper = styled("div", {
   display: "flex",
   backgroundColor: "#F4EEFF",
-  padding: "40px 10px",
+  padding: "25px 10px 40px 10px",
   fontFamily: "Anek Telugu",
   height: "78vh",
   gap: "30px",

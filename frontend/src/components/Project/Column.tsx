@@ -20,9 +20,9 @@ export const Column: FC<IColumn> = ({ heading, elements }) => {
 
   return (
     <div id={columnIdentifier}> {/* Wrap the column with Draggable */}
-      <div className="w-[295px] border-dashed border-2 border-black p-[10px] rounded-[10px] overflow-y-hidden overflow-x-hidden">
-        <ColumnHeaderWrapper>
-          <Heading>{heading}</Heading>
+      <div className="w-[295px] border-dashed border-2 border-black border-opacity-65 p-[10px] rounded-[10px] overflow-y-hidden overflow-x-hidden">
+        <ColumnHeaderWrapper className="bg-secondary">
+          <p className="font-bold text-primary text-lg">{heading}</p>
           <ColumnTasksAmout>{amounts}</ColumnTasksAmout>
         </ColumnHeaderWrapper>
         <Droppable id={columnIdentifier}>
@@ -43,11 +43,6 @@ export const Column: FC<IColumn> = ({ heading, elements }) => {
   );
 };
 
-
-const Heading = styled("h3", {
-  color: "#FFF",
-});
-
 const DropPlaceholder = styled("div", {
   height: 35,
   backgroundColor: "transparent",
@@ -60,7 +55,6 @@ const ColumnHeaderWrapper = styled("div", {
   flexDirection: "row",
   justifyContent: "space-between",
   alignItems: "center",
-  background: "#5800FF",
   // variants: {
   //   variant: {
   //     backlog: {

@@ -16,6 +16,7 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { contactSchema } from "@/composables/Validation"
 import { toast } from "../ui/use-toast"
+import axios from "axios"
 
 export function ContactForm() {
   const form = useForm<z.infer<typeof contactSchema>>({
@@ -24,15 +25,18 @@ export function ContactForm() {
       username: "",
       email: "",
       location: "",
-      messages: "",
+      message: "",
     },
   })
-  function onSubmit(values: z.infer<typeof contactSchema>) {
-    console.log(values)
+  function onSubmit(data: z.infer<typeof contactSchema>) {
+    axios.post('http://localhost:8888/createContact', data)
+      .then((response) => console.log(response))
+      .catch((error) => console.log(error));
     toast({
       variant: "success",
       title: "You send contact message Successfully!",
     });
+    form.reset()
   }
 
   return (
@@ -85,7 +89,7 @@ export function ContactForm() {
         />
         <FormField
             control={form.control}
-            name="messages"
+            name="message"
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-[16px]">Message</FormLabel>
