@@ -10,6 +10,8 @@ import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
+import Authentication from './pages/Authentication.tsx'
+import { GoogleOAuthProvider } from '@react-oauth/google'
 
 const router = createBrowserRouter([
   {
@@ -32,11 +34,18 @@ const router = createBrowserRouter([
     element: <ProjectTasks />,
     errorElement: <Error />,
   },
+  {
+    path: "/auth",
+    element: <Authentication />,
+    errorElement: <Error />,
+  },
 ]);
 
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <GoogleOAuthProvider clientId='846393406450-7mopqb3n10vai4na9ojntk77m4g6g2k8.apps.googleusercontent.com' >
+      <RouterProvider router={router} />
+    </GoogleOAuthProvider>
   </React.StrictMode>,
 )

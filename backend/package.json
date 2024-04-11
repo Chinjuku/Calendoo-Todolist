@@ -20,8 +20,12 @@
     "@prisma/client": "^5.12.1",
     "@types/express": "^4.17.21",
     "@types/mongoose": "^5.11.97",
+    "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
     "express": "^4.19.2",
+    "google-auth-library": "^9.7.0",
+    "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.5.0",
     "mongoose": "^8.3.1",
     "nodemon": "^3.1.0"

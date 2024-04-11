@@ -27,6 +27,7 @@ export const createUser = async (req: any, res: any) => {
         return res.status(401).send(error)
     }
 }
+
 export const loginUser = async (req: any, res: any) => {
     try {
         const { email, password } = req.body;
