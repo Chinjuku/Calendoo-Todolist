@@ -1,9 +1,11 @@
 // import { Link } from "react-router-dom"
 import logoButtom from '/svg/arrow-bottom.svg'
-import { useEffect } from 'react';
+import { useEffect, useContext } from 'react';
 import { Link, Events, animateScroll as scroll, scrollSpy } from 'react-scroll';
+import { UserContext } from "@/components/contexts/user/UserContext"
 
 const Navbar = () => {
+  const userContext = useContext(UserContext);
   useEffect(() => {
     scrollSpy.update();
     return () => {
@@ -81,6 +83,9 @@ const Navbar = () => {
                 </li>
                 <li>
                     <div className="h-[61px] w-[61px] rounded-[50%] bg-primary"></div>
+                </li>
+                <li>
+                    <p className='text-primary text-xl'>{userContext.user?.username}</p>
                 </li>
             </ul>
         </div>

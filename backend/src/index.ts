@@ -1,29 +1,38 @@
-// run ts-node index.ts
+// run ts-node index.ts , npm start
 import cors from "cors"
 import express from "express";
-const { MongoClient, ServerApiVersion } = require('mongodb');
-import { allUsers, createUser, loginUser } from "./controller/user"
-import { createList } from "./controller/list";
-import { createContact } from "./controller/contact";
-import { createNote, deleteNote, updateNote } from "./controller/note";
-import { createProject, showProject } from "./controller/project";
-import { createBoard, showBoard } from "./controller/board";
-import { authenticateUser, authorization, protectUser } from "./controller/auth"
+import { allUsers, createUser, loginUser } from "./routes/user"
+import { createList } from "./routes/list";
+import { createContact } from "./routes/contact";
+import { createNote, deleteNote, updateNote } from "./routes/note";
+import { createProject, showProject } from "./routes/project";
+import { createBoard, showBoard } from "./routes/board";
+import googleAuthRoutes from './routes/auth/google-auth';
+
+require("dotenv").config();
 
 const app = express();
 const cookieParser = require("cookie-parser");
+const { MongoClient, ServerApiVersion } = require('mongodb');
 const port = 8888;
 const uri = "mongodb+srv://cjchinjung123:Dg8xsx1XhhSa0zRq@cluster0.rnxkkbo.mongodb.net/mydb"
 
 app.use(express.json());
-app.use(cors())
+app.use(cors({
+  origin: "http://localhost:5173",
+  methods: ["GET", "POST", "PUT", "DELETE"]
+}))
 app.use(cookieParser());
+app.use("/api/google-auth", googleAuthRoutes)
+
 // User
 app.post('/createUser', createUser);
 app.get('/loginUser', loginUser);
 app.get('/user', allUsers);
-app.post('/google-auth', authenticateUser);
-app.get("/protected", authorization, protectUser);
+// app.post('/google-auth', authenticateUser);
+// app.get("/protected", authorization, googleAuthRoutes);
+// app.get("/logout", authorization, logoutUser);
+
 // Contacts
 app.post('/createContact', createContact);
 
