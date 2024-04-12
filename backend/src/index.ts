@@ -1,16 +1,15 @@
 // run ts-node index.ts , npm start
 import cors from "cors"
 import express from "express";
-import { allUsers, createUser, loginUser } from "./routes/user"
-import { createList } from "./routes/list";
-import { createContact } from "./routes/contact";
-import { createNote, deleteNote, updateNote } from "./routes/note";
-import { createProject, showProject } from "./routes/project";
-import { createBoard, showBoard } from "./routes/board";
 import googleAuthRoutes from './routes/auth/google-auth';
+import authRoutes from './routes/auth/simple-auth';
+import boardRoutes from './routes/board';
+import projectRoutes from './routes/project';
+import noteRoutes from './routes/note';
+import contactRoutes from './routes/contact';
+import listRoutes from './routes/list';
 
 require("dotenv").config();
-
 const app = express();
 const cookieParser = require("cookie-parser");
 const { MongoClient, ServerApiVersion } = require('mongodb');
@@ -23,34 +22,24 @@ app.use(cors({
   methods: ["GET", "POST", "PUT", "DELETE"]
 }))
 app.use(cookieParser());
-app.use("/api/google-auth", googleAuthRoutes)
-
 // User
-app.post('/createUser', createUser);
-app.get('/loginUser', loginUser);
-app.get('/user', allUsers);
-// app.post('/google-auth', authenticateUser);
-// app.get("/protected", authorization, googleAuthRoutes);
-// app.get("/logout", authorization, logoutUser);
+app.use("/api/google-auth", googleAuthRoutes)
+app.use("/api/user", authRoutes)
 
 // Contacts
-app.post('/createContact', createContact);
+app.use('/api/contact', contactRoutes)
 
 //Lists
-app.post('/createList', createList)
+app.use('/api/list', listRoutes);
 
 // Notes
-app.post('/createNote', createNote)
-app.put('/updateNote/:noteId', updateNote)
-app.delete('/deleteNote/:noteId', deleteNote)
+app.use('/api/note', noteRoutes)
 
 // Projects
-app.post('/createProject', createProject)
-app.get('/showProject/:userId', showProject)
+app.use('/api/project', projectRoutes)
 
 // Boards
-app.post('/createBoard', createBoard)
-app.get('/showBoard/:projectId', showBoard)
+app.post('/api/board', boardRoutes)
 
 // Test port
 app.listen(port, () => {

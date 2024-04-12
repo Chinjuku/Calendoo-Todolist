@@ -1,21 +1,19 @@
-import { GoogleLogin } from '@react-oauth/google';
+
 import { Toaster } from '@/components/ui/toaster';
-import { handleGoogleLogin } from '@/api/post/googleauth';
+// import { handleGoogleLogin } from '@/api/post/googleauth';
+import { AuthProvider } from '@/middleware/useAuth';
+import { useContext } from "react";
+import { AuthContext } from "@/middleware/useAuth"
+import LoginGoogle from '@/components/auth/LoginGoogle';
 
 const Authentication = () => {
+  const authContext = useContext(AuthContext);
+  console.log(authContext.isAuthenticated)
   return (
-    <div>
+    <AuthProvider>
+      <LoginGoogle/>
         <Toaster />
-        <GoogleLogin 
-            onSuccess={handleGoogleLogin}
-            onError={() => {
-            console.log("Login Failed");
-            }}
-            useOneTap
-        />
-        <button onClick={() => localStorage.removeItem("token")}>Logout</button>
-    </div>
-    
+    </AuthProvider>
   )
 }
 

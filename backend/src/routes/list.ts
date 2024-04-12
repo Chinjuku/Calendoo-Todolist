@@ -1,8 +1,10 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from "@prisma/client"
+import Router from "express"
 
-const prisma = new PrismaClient();
+const prisma = new PrismaClient()
+const router = Router();
 
-export const createList = async (req: any, res: any) => {
+router.post("/create", async (req: any, res: any) => {
     try {
       const { namelist, color } = req.body;
 
@@ -27,5 +29,6 @@ export const createList = async (req: any, res: any) => {
       console.error(err);
       return res.status(500).send({ message: "Internal server error" }); 
     }
-};
+})
 
+export default router

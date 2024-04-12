@@ -1,7 +1,10 @@
 import { PrismaClient } from "@prisma/client"
-const prisma = new PrismaClient()
+import Router from "express"
 
-export const createUser = async (req: any, res: any) => {
+const prisma = new PrismaClient()
+const router = Router();
+
+router.post("/create", async (req: any, res: any) => {
     try {
         const { username, email, password } = req.body;
         const checkEmail = await prisma.user.findMany({
@@ -26,9 +29,9 @@ export const createUser = async (req: any, res: any) => {
     } catch (error) {
         return res.status(401).send(error)
     }
-}
+})
 
-export const loginUser = async (req: any, res: any) => {
+router.get("/login", async (req: any, res: any) => {
     try {
         const { email, password } = req.body;
         const user = await prisma.user.findMany({
@@ -41,12 +44,13 @@ export const loginUser = async (req: any, res: any) => {
     } catch (error) {
         return res.status(401).send(error)
     }
-}
-export const allUsers = async (req: any, res: any) => {
+})
+router.get("/getall", async (req: any, res: any) => {
     try {
         const user = await prisma.user.findMany().then((user) => res.status(200).send(user))
     } catch (error) {
         return res.status(401).send(error)
     }
-}
+})
 
+export default router;

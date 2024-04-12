@@ -1,8 +1,10 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from "@prisma/client"
+import Router from "express"
 
-const prisma = new PrismaClient();
+const prisma = new PrismaClient()
+const router = Router();
 
-export const createContact = async (req:any, res:any) => {
+router.post("/create", async (req:any, res:any) => {
     try {
         const { username, email, location, message } = req.body
         const contact = await prisma.contact.create({
@@ -19,4 +21,6 @@ export const createContact = async (req:any, res:any) => {
         res.status(500).send(error)
     }
     
-}
+})
+
+export default router;

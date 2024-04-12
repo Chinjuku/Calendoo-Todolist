@@ -1,7 +1,7 @@
 import { OAuth2Client } from "google-auth-library";
 import { PrismaClient } from "@prisma/client";
 import { Router } from "express";
-import { authorization, jwtRefreshToken } from "./middleware";
+import { authorization, jwtRefreshToken } from "./authenticate";
 import { generateRefreshToken, generateToken, refreshToken } from "../../utils/jwtHelper"
 
 const router = Router();
@@ -48,7 +48,7 @@ router.post("/google-login", async (req: any, res: any) => {
 router.get("/getuser", authorization , (req:any, res:any) => {
     // console.log(req.user.username)
     const user = req.user;
-    res.json({ user: { id: user.id, username: user.username, email: user.email } });
+    res.json({ user: { id: user.id, username: user.username, email: user.email, token: true } });
 })
 
 router.post("/refresh", jwtRefreshToken, (req:any, res:any) => {

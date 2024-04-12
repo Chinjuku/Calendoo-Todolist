@@ -1,7 +1,10 @@
-import { PrismaClient } from "@prisma/client";
-const prisma = new PrismaClient()
+import { PrismaClient } from "@prisma/client"
+import Router from "express"
 
-export const createTask = async (req:any, res:any) => {
+const prisma = new PrismaClient()
+const router = Router();
+
+router.post('/create', async (req:any, res:any) => {
     try {
         const { boardname, color, isStarred } = req.body
         const projectId = req.params.projectId
@@ -18,9 +21,9 @@ export const createTask = async (req:any, res:any) => {
     } catch (err) {
         return res.status(401).json(err)
     }
-}
+})
 
-export const showBoard = async (req:any, res:any) => {
+router.get('/show', async (req:any, res:any) => {
     try {
         const projectId = req.params.projectId
         const board = await prisma.board.findMany({
@@ -30,4 +33,6 @@ export const showBoard = async (req:any, res:any) => {
     } catch (err) {
         return res.status(401).json(err)
     }
-}
+})
+
+export default router;

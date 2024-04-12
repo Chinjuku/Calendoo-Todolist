@@ -21,8 +21,8 @@ const Home = () => {
           </> 
           : 
           <>
-            <Link to="/login" className='rounded-[50px] h-full w-[220px] text-opacity-70 bg-transparent border-secondary border-[4px] justify-center text-[24px] font-bold text-secondary hover:bg-secondary transition-all hover:text-primary flex items-center'>Notes</Link>
-            <Link to="/login" className='rounded-[50px] h-full w-[220px] bg-secondary border-secondary border-[4px] justify-center text-[24px] font-bold text-primary hover:text-secondary hover:bg-transparent transition-all flex items-center'>Project Tasks</Link>
+            <Link to="/auth" className='rounded-[50px] h-full w-[220px] text-opacity-70 bg-transparent border-secondary border-[4px] justify-center text-[24px] font-bold text-secondary hover:bg-secondary transition-all hover:text-primary flex items-center'>Notes</Link>
+            <Link to="/auth" className='rounded-[50px] h-full w-[220px] bg-secondary border-secondary border-[4px] justify-center text-[24px] font-bold text-primary hover:text-secondary hover:bg-transparent transition-all flex items-center'>Project Tasks</Link>
           </>}
             
         </div>

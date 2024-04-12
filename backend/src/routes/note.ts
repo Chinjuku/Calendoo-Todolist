@@ -1,8 +1,10 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from "@prisma/client"
+import Router from "express"
 
 const prisma = new PrismaClient()
+const router = Router();
 
-export const createNote = async (req:any, res:any) => {
+router.post('/create', async (req:any, res:any) => {
     try {  
         const { title, description, listId, date, time, piority, userId } = req.body
         const addnotes = await prisma.note.create({
@@ -20,9 +22,9 @@ export const createNote = async (req:any, res:any) => {
     } catch (err) {
         return res.status(401).send(err)
     }
-}
+})
 
-export const showNote = async (req:any, res:any) => {
+router.get('/show', async (req:any, res:any) => {
     try {  
         const userId = req.body
         const notes = await prisma.note.findMany({
@@ -31,9 +33,9 @@ export const showNote = async (req:any, res:any) => {
     } catch (err) {
         return res.status(401).send(err)
     }
-}
+})
 
-export const updateNote = async (req:any, res:any) => {
+router.put('/update/:noteId', async (req:any, res:any) => {
     try {  
         const { title, description, listId, date, time, piority } = req.body
         const noteId = req.params.noteId
@@ -54,9 +56,9 @@ export const updateNote = async (req:any, res:any) => {
     } catch (err) {
         return res.status(401).send(err)
     }
-}
+})
 
-export const deleteNote = async (req:any, res:any) => {
+router.delete('/delete/:noteId', async (req:any, res:any) => {
     try {  
         const noteId = req.params.noteId
         const deleteNote = await prisma.note.delete({
@@ -68,5 +70,7 @@ export const deleteNote = async (req:any, res:any) => {
     } catch (err) {
         return res.status(401).send(err)
     }
-}
+})
+
+export default router
 
