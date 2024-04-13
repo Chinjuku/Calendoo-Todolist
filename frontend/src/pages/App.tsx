@@ -5,7 +5,7 @@ import About from "../components/Home/About"
 import Contact from "../components/Home/Contact"
 import { Element } from 'react-scroll';
 import { Toaster } from "@/components/ui/toaster";
-import { UserContextProvider } from "@/components/contexts/user/UserContext";
+import { UserContextProvider } from "@/contexts/api-get/UserContext";
 
 
 function App() {
@@ -34,7 +34,7 @@ function App() {
       <UserContextProvider>
         <div className='bg-primary1 h-full w-full'>
           <Toaster />
-          <Navbar />
+            <Navbar />
           <Element name="home">
             <Home />
           </Element>

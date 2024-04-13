@@ -15,7 +15,6 @@ const LoginGoogle = () => {
         }}
         useOneTap
       />
-      <button onClick={authContext.logoutUser}>Logout</button>
       <div>{authContext.isAuthenticated ? "true" : "false"}</div>
     </div>
   );

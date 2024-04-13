@@ -9,7 +9,6 @@ const prisma = new PrismaClient()
 const client = new OAuth2Client();
 
 const jwt = require("jsonwebtoken");
-// const JWT_SECRET = process.env.JWT_SECRET;
 
 router.post("/google-login", async (req: any, res: any) => {
     const { credential, client_id } = req.body;
@@ -18,7 +17,9 @@ router.post("/google-login", async (req: any, res: any) => {
         idToken: credential,
         audience: client_id,
     });
-    const payload: any | undefined = ticket.getPayload();
+    const payload: any | undefined = ticket.getPayload()
+    console.log(payload)
+    const profile = payload['picture'];
     const username = payload['name'];
     const email = payload['email'];
     const user = await prisma.user.findFirst({
@@ -31,8 +32,11 @@ router.post("/google-login", async (req: any, res: any) => {
             data: {
                 username: username,
                 email: email,
+                profile: profile
             }
         }).then((createUser) => res.status(200).json(createUser))
+        const token = generateToken(user)
+        res.send({ token })
     }
     const token = generateToken(user)
     res.send({ token })
@@ -48,7 +52,7 @@ router.post("/google-login", async (req: any, res: any) => {
 router.get("/getuser", authorization , (req:any, res:any) => {
     // console.log(req.user.username)
     const user = req.user;
-    res.json({ user: { id: user.id, username: user.username, email: user.email, token: true } });
+    res.json({ user: { id: user.id, username: user.username, email: user.email, profile: user.profile } });
 })
 
 router.post("/refresh", jwtRefreshToken, (req:any, res:any) => {

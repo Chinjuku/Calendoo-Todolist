@@ -3,7 +3,7 @@ import AboutUs from '/svg/ABOUT-US.svg'
 
 const About = () => {
   return (
-    <div className='h-[705px] flex items-center relative'>
+    <div className='h-[705px] flex items-center relative mt-[50px]'>
         <img className='absolute laptop:left-0' src={Arc} alt="" />
         <img className='absolute laptop:left-[33px]' src={AboutUs} alt="" />
         <div className='absolute laptop:left-[18%] grid grid-cols-2 p-[5%] gap-[5%] bg-primary text-[17px] font-extrabold text-secondary w-[75%] h-[367px] rounded-[180px]'>

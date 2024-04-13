@@ -6,7 +6,7 @@ import Calendars from "/svg/Calendar.svg"
 import Stickywall from "/svg/Stickywall.svg"
 import Add from "/svg/Add.svg"
 import Time from "/svg/Time.svg"
-import { useState } from "react";
+import { useState, useContext } from "react";
 import DatePicker from "react-datepicker";
 import AddNote from "./AddNote"
 import AddList from "./AddList"
@@ -14,9 +14,11 @@ import "react-datepicker/dist/react-datepicker.css";
 const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 import { Setup2, CheckOpenNotes } from "@/composables/React.types"
 import { Modal } from "flowbite-react";
+import { ListContext } from "@/contexts/api-get/ListContext"
 
 
 const Menu = (props: CheckOpenNotes) => { 
+  const { list } = useContext(ListContext)
   const monthIndex: number = (new Date().getMonth());
   const days: number = (new Date().getDate());
   const year: number = (new Date().getFullYear());
@@ -109,6 +111,9 @@ const Menu = (props: CheckOpenNotes) => {
                     onSelect={handleDateSelect}
                     onChange={(date: Date | null) => date && setStartDate(date)} 
                 />
+                {list?.map(item => (
+                    <div>{item.namelist}</div> // Assuming each item has an 'id' and 'name' property
+                ))}
             </div>
         </div>
     </div>

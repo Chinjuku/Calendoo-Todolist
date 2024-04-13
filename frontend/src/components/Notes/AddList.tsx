@@ -19,26 +19,22 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { toast } from "@/components/ui/use-toast";
 import { Input } from "../ui/input";
 import { BooleanCheck } from "@/composables/React.types";
 import { ListSchema } from "@/composables/Validation";
+import { createList } from "@/api/post/createList";
+import { useContext } from "react";
+import { UserContext } from "@/contexts/api-get/UserContext"
+
 
 const AddList = (props: BooleanCheck) => {
+  const userContext = useContext(UserContext)
   const form = useForm<z.infer<typeof ListSchema>>({
     resolver: zodResolver(ListSchema),
   });
   const onSubmit = (data: z.infer<typeof ListSchema>) => {
-    // console.log(data);
     props.handleClick(false);
-    toast({
-      title: "You add list to Lists successfully.",
-      description:
-        "Your name list is: " +
-        data.namelist +
-        " & Your color is: " +
-        data.color,
-    });
+    createList(data.namelist, data.color, userContext.user?.id)
   };
   return (
     <div className="absolute bottom-[150px] left-[250px] max-h-[333px] w-[230px] z-10 bg-secondary text-white py-6 pb-10 px-5 rounded-[20px]">

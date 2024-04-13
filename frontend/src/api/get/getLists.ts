@@ -4,7 +4,7 @@ import { UserData } from "../../composables/apidata.types";
 export const showUser = async (): Promise<UserData | undefined> => {
     try {
       const gettoken = localStorage.getItem('token');
-      const response = await axios.get('http://localhost:8888/api/google-auth/getuser', {
+      const response = await axios.get('http://localhost:8888/api/', {
         headers: {
             Authorization: `Bearer ${gettoken}`,
         },
@@ -13,8 +13,8 @@ export const showUser = async (): Promise<UserData | undefined> => {
       const username = data.username
       const email = data.email
       const id = data.id
-      const token = data.token
-      return { username, email, id, token };
+      const profile = data.profile
+      return { username, email, id, profile };
     } catch (err) {
       console.error(err);
     }

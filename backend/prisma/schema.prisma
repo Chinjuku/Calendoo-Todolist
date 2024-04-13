@@ -19,8 +19,10 @@ model User {
   username    String
   email   String   @unique
   password String?
+  profile String?
   notes   Note[]
   projects   Project[]
+  lists List[]
 }
 
 model Note {
@@ -40,6 +42,8 @@ model List {
   id       String    @id @default(auto()) @map("_id") @db.ObjectId
   namelist String @unique
   color String
+  user   User      @relation(fields: [userId], references: [id])
+  userId   String    @db.ObjectId
   notes Note[]
 }
 

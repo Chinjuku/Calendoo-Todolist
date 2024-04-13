@@ -6,7 +6,7 @@ const router = Router();
 
 router.post("/create", async (req: any, res: any) => {
     try {
-      const { namelist, color } = req.body;
+      const { namelist, color, userId } = req.body;
 
       const checkNameList = await prisma.list.findUnique({
         where: {
@@ -20,7 +20,8 @@ router.post("/create", async (req: any, res: any) => {
       const addList = await prisma.list.create({
         data: {
           namelist: namelist,
-          color: color
+          color: color,
+          userId: userId
         }
       });
       return res.status(200).send(addList);
@@ -29,6 +30,23 @@ router.post("/create", async (req: any, res: any) => {
       console.error(err);
       return res.status(500).send({ message: "Internal server error" }); 
     }
+})
+
+router.get("/showlists/:userId", async (req: any, res: any) => {
+  try {
+    const userId = req.params.userId;
+
+    const showList = await prisma.list.findMany({
+        where: {
+          userId: userId
+        }
+    });
+    return res.status(200).send(showList);
+
+  } catch (err) {
+    console.error(err);
+    return res.status(500).send({ message: "Internal server error" }); 
+  }
 })
 
 export default router

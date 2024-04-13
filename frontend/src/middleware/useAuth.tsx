@@ -33,7 +33,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           });
       }
       setIsAuthenticated(true);
-      navigate("/notes")
+      navigate("/")
     } catch (error) {
       console.error("Error during Google Login:", error);
       localStorage.removeItem("token");
@@ -47,6 +47,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const logoutUser = () => {
     localStorage.removeItem("token")
     setIsAuthenticated(false);
+    window.location.reload()
   };
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const value = useMemo(() => ({ isAuthenticated, loginUser, logoutUser }), []);

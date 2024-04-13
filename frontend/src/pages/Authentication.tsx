@@ -11,7 +11,7 @@ const Authentication = () => {
   console.log(authContext.isAuthenticated)
   return (
     <AuthProvider>
-      <LoginGoogle/>
+        <LoginGoogle/>
         <Toaster />
     </AuthProvider>
   )

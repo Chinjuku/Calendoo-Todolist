@@ -2,7 +2,7 @@ import bghome from '/svg/bg-home.svg'
 import homeimg from '/image/homeimg.png'
 import { Link } from 'react-router-dom'
 import { useContext } from 'react'
-import { UserContext } from '@/components/contexts/user/UserContext'
+import { UserContext } from '@/contexts/api-get/UserContext'
 
 const Home = () => {
   const userContext = useContext(UserContext)

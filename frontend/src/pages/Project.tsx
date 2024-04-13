@@ -18,10 +18,10 @@ import { projectSchema } from "../composables/Validation"
 const Project = () => {
     const form = useForm<z.infer<typeof projectSchema>>({
         resolver: zodResolver(projectSchema),
-        defaultValues: {
-            project: "",
-            color: "",
-        },
+            defaultValues: {
+                project: "",
+                color: "",
+            },
         })
     function onSubmit(values: z.infer<typeof projectSchema>) {
         console.log(values)
