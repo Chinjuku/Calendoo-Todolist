@@ -35,3 +35,25 @@ export interface LoginData {
     password: string
 }
 
+export interface RegisterData {
+    username: string
+    email: string
+    password: string
+}
+
+export type NoteData = {
+    userId: string
+    listId: string
+    id: string
+    title: string;
+    description: string;
+    date: string;
+    time: string;
+    piority: number;
+    list: {
+        id: string
+        namelist: string
+        color: string
+    }
+}
+

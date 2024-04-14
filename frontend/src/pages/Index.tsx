@@ -1,4 +1,4 @@
-import App from '@/pages/App.tsx'
+// import App from '@/pages/App.tsx'
 // import Notes from '@/pages/Notes.tsx'
 import Project from '@/pages/Project.tsx'
 import ProjectTasks from '@/pages/ProjectTasks.tsx'
@@ -12,17 +12,25 @@ import React, { Suspense } from 'react'
 import Loading from './Loading'
 
 const Notes = React.lazy(() => {
-return Promise.all([
-    import("@/pages/Notes.tsx"),
-    new Promise(resolve => setTimeout(resolve, 1000))
-    ])
-    .then(([moduleExports]) => moduleExports);
-});
+    return Promise.all([
+        import("@/pages/Notes.tsx"),
+        new Promise(resolve => setTimeout(resolve, 1300))
+        ])
+        .then(([moduleExports]) => moduleExports);
+    });
 
 const Authentication = React.lazy(() => {
     return Promise.all([
         import("@/pages/Authentication.tsx"),
         new Promise(resolve => setTimeout(resolve, 1000))
+        ])
+        .then(([moduleExports]) => moduleExports);
+    });
+
+const App = React.lazy(() => {
+    return Promise.all([
+        import("@/pages/App.tsx"),
+        new Promise(resolve => setTimeout(resolve, 800))
         ])
         .then(([moduleExports]) => moduleExports);
     });

@@ -34,6 +34,7 @@
     "localforage": "^1.10.0",
     "lucide-react": "^0.364.0",
     "match-sorter": "^6.3.4",
+    "moment": "^2.30.1",
     "radash": "^7.1.0",
     "react": "^18.2.0",
     "react-datepicker": "^6.6.0",

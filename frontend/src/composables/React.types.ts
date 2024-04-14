@@ -8,7 +8,8 @@ export type Setup2 = {
     check: boolean;
 }
 export interface CheckOpenNotes {
-    clickStickyNotes: (bools: boolean, bools2: boolean) => void
+    handleSwitch: (bools: boolean) => void
+    openSwitch: boolean
 }
 
 // @/components/Notes/AddList.tsx
@@ -41,4 +42,8 @@ export interface IElement {
 export interface IColumn {
     heading: string;
     elements: IElement[];
+}
+
+export interface SwitchProps {
+    handleSwitch: ( bools : boolean) => void;
 }

@@ -30,6 +30,7 @@ const Login = () => {
       password: "",
     },
   });
+
   function onSubmit(data: z.infer<typeof loginSchema>) {
     loginUser(data);
     setTimeout(() => navigate("/"), 2000);

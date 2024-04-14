@@ -25,12 +25,17 @@ router.post('/create', async (req:any, res:any) => {
     }
 })
 
-router.get('/show', async (req:any, res:any) => {
+router.get('/show/:userId', async (req:any, res:any) => {
     try {  
-        const userId = req.body
+        const userId = req.params.userId
         const notes = await prisma.note.findMany({
-            where: { userId: userId }
-        }).then((notes) => res.status(200).json(notes))
+            where: { userId: userId },
+            include : {
+                list: true
+            }
+        })
+        console.log(notes)
+        return res.status(200).json(notes)
     } catch (err) {
         return res.status(401).send(err)
     }

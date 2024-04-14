@@ -1,15 +1,17 @@
 import axios from "axios";
-import { UserData } from "../../composables/apidata.types";
 
-export const showUser = async (): Promise<UserData | undefined> => {
+export const showNote = async (userId: string | undefined) => {
     try {
-      const response = await axios.get('http://localhost:8888/api/note/show');
-      const data = response.data.user
-      const username = data.username
-      const email = data.email
-      const id = data.id
-      const profile = data.profile
-      return { username, email, id, profile };
+        if (userId) {
+            const response = await axios.get(`http://localhost:8888/api/note/show/${userId}`);
+            const data = response.data
+            if(response.status === 200) {
+              return data
+            } else {
+              return []
+            }
+            
+        }
     } catch (err) {
       console.error(err);
     }

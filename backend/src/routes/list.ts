@@ -41,6 +41,7 @@ router.get("/showlists/:userId", async (req: any, res: any) => {
           userId: userId
         }
     });
+
     return res.status(200).send(showList);
 
   } catch (err) {

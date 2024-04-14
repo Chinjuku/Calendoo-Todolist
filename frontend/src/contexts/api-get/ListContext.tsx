@@ -25,7 +25,6 @@ export const ListContextProvider = ({ children }: ListContextProviderProps) => {
                 if (userContext.user?.id) {
                     const response = await axios.get(`http://localhost:8888/api/list/showlists/${userContext.user?.id}`);
                     const data = response.data
-                    console.log(data)
                     setList(data)
                 }
             } catch (err) {

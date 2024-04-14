@@ -8,12 +8,12 @@ const router = Router();
 router.post("/create", async (req: any, res: any) => {
     try {
         const { username, email, password } = req.body;
-        const checkEmail = await prisma.user.findMany({
+        const checkEmail = await prisma.user.findUnique({
             where: {
                 email: email
             }
         })
-        if(checkEmail.length === 0) {
+        if(!checkEmail) {
             const crateUser = await prisma.user.create({
                 data: {
                     username: username,

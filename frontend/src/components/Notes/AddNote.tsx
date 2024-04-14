@@ -31,6 +31,7 @@ const AddNote = (props: BoolNoteCheck) => {
     console.log(data);
     props.checkClose(false)
     createNote(data, user?.id)
+    window.location.reload()
   };
   return (
     <div

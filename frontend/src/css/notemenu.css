@@ -1,0 +1,7 @@
+.switch {
+    transition: 0.3s ease;
+    background-color: transparent;
+}
+.switch.active {
+    background-color: #E0D8ED;
+}

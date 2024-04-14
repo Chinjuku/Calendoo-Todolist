@@ -24,17 +24,17 @@ import { BooleanCheck } from "@/composables/React.types";
 import { ListSchema } from "@/composables/Validation";
 import { createList } from "@/api/post/createList";
 import { useContext } from "react";
-import { UserContext } from "@/contexts/api-get/UserContext"
-
+import { UserContext } from "@/contexts/api-get/UserContext";
+const colors = ["orange", "lightgreen", "green", "gold", "pink", "lightblue", "lightgray"];
 
 const AddList = (props: BooleanCheck) => {
-  const userContext = useContext(UserContext)
+  const userContext = useContext(UserContext);
   const form = useForm<z.infer<typeof ListSchema>>({
     resolver: zodResolver(ListSchema),
   });
   const onSubmit = (data: z.infer<typeof ListSchema>) => {
     props.handleClick(false);
-    createList(data.namelist, data.color, userContext.user?.id)
+    createList(data.namelist, data.color, userContext.user?.id);
   };
   return (
     <div className="absolute bottom-[150px] left-[250px] max-h-[333px] w-[230px] z-10 bg-secondary text-white py-6 pb-10 px-5 rounded-[20px]">
@@ -91,36 +91,14 @@ const AddList = (props: BooleanCheck) => {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent className="font-bold rounded">
-                        <SelectItem
-                          className="focus:bg-secondary1 rounded"
-                          value="orange"
-                        >
-                          orange
-                        </SelectItem>
-                        <SelectItem
-                          className="focus:bg-secondary1 rounded"
-                          value="green"
-                        >
-                          green
-                        </SelectItem>
-                        <SelectItem
-                          className="focus:bg-secondary1 rounded"
-                          value="gold"
-                        >
-                          gold
-                        </SelectItem>
-                        <SelectItem
-                          className="focus:bg-secondary1 rounded"
-                          value="pink"
-                        >
-                          pink
-                        </SelectItem>
-                        <SelectItem
-                          className="focus:bg-secondary1 rounded"
-                          value="lightblue"
-                        >
-                          lightblue
-                        </SelectItem>
+                        {colors.map((colors) => (
+                          <SelectItem
+                            className="focus:bg-secondary1 rounded"
+                            value={colors}
+                          >
+                            {colors}
+                          </SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
                   </div>

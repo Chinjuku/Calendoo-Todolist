@@ -9,12 +9,7 @@ import Calendar from "@/components/Notes/Calendar";
 import { ListContextProvider } from "@/contexts/api-get/ListContext";
 
 const Notes = () => {
-  const [openStcikyNotes, setOpenStcikyNotes] = useState(true);
-  const [openCalendar, setOpenCalendar] = useState(false);
-  const handleOpen = (getOpenNotes: boolean, getOpenCalendar: boolean) => {
-    setOpenStcikyNotes(getOpenNotes);
-    setOpenCalendar(getOpenCalendar);
-  };
+  const [openSwitch, setOpenSwitch] = useState(true);
   return (
     <UserContextProvider>
       <ListContextProvider>
@@ -30,9 +25,8 @@ const Notes = () => {
             <div className="absolute top-[-33px] w-[245px] h-[66px] right-[90px] flex justify-center items-center bg-secondary1 text-primary text-[32px] font-bold">
               Notes
             </div>
-            <Menu clickStickyNotes={handleOpen} />
-            {openStcikyNotes == true ? <StickyNotes /> : null}
-            {openCalendar == true ? <Calendar /> : null}
+            <Menu handleSwitch={(bools) => setOpenSwitch(bools)} openSwitch={openSwitch} />
+            {openSwitch ? <StickyNotes /> : <Calendar />}
           </div>
         </div>
       </ListContextProvider>
