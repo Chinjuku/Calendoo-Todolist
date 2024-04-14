@@ -1,5 +1,6 @@
 import { PrismaClient } from "@prisma/client"
 import Router from "express"
+import { generateToken } from "../../utils/jwtHelper";
 
 const prisma = new PrismaClient()
 const router = Router();
@@ -31,16 +32,17 @@ router.post("/create", async (req: any, res: any) => {
     }
 })
 
-router.get("/login", async (req: any, res: any) => {
+router.post("/login", async (req: any, res: any) => {
     try {
         const { email, password } = req.body;
-        const user = await prisma.user.findMany({
+        const user = await prisma.user.findFirst({
             where: {
                 email: email,
                 password: password,
             }
         })
-        user.length === 0 ? res.status(200).send(user, console.log("User not found")) : res.status(200).send(user)
+        const token = generateToken(user)
+        !user ? res.status(400).send(user, console.log("User not found")) : res.status(200).send({ token })
     } catch (error) {
         return res.status(401).send(error)
     }

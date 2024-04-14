@@ -23,6 +23,7 @@ export const createList = async (namelist: string, color: string, userId: string
                     color,
             });
         }
+        window.location.reload()
     } catch (err) {
         toast({
             variant: "destructive",

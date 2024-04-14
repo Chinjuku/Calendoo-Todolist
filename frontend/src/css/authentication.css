@@ -1,0 +1,11 @@
+.auth-container {
+    opacity: 0;
+    transform: translateY(-550px);
+    transition: opacity 0.3s ease, transform .5s ease;
+}
+  
+.auth-container.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+  

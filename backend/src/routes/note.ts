@@ -12,7 +12,7 @@ router.post('/create', async (req:any, res:any) => {
                 title: title,
                 description: description,
                 date: new Date(date),
-                time: new Date(`${date}T${time}`),
+                time: new Date(time),
                 piority: piority,
                 listId: listId,
                 userId: userId
@@ -20,6 +20,7 @@ router.post('/create', async (req:any, res:any) => {
         }).then((addnotes) => res.status(200).json(addnotes))
         console.log(addnotes)
     } catch (err) {
+        console.error(err);
         return res.status(401).send(err)
     }
 })
@@ -47,7 +48,7 @@ router.put('/update/:noteId', async (req:any, res:any) => {
                 title: title,
                 description: description,
                 date: new Date(date),
-                time: new Date(`${date}T${time}`),
+                time: new Date(time),
                 piority: piority,
                 listId: listId
             }

@@ -3,12 +3,7 @@ import { UserData } from "../../composables/apidata.types";
 
 export const showUser = async (): Promise<UserData | undefined> => {
     try {
-      const gettoken = localStorage.getItem('token');
-      const response = await axios.get('http://localhost:8888/api/', {
-        headers: {
-            Authorization: `Bearer ${gettoken}`,
-        },
-      });
+      const response = await axios.get('http://localhost:8888/api/note/show');
       const data = response.data.user
       const username = data.username
       const email = data.email

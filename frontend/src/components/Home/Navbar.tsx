@@ -103,25 +103,31 @@ const Navbar = () => {
                       role="button"
                       className="mt-3 flex items-center gap-3 bg-transparent"
                     >
-                      <img
-                        src={userContext.user?.profile}
-                        className="h-[40px] w-[40px] rounded-[50%] bg-primary"
-                        alt="User Avatar"
-                      ></img>
-                      <p className="text-primary text-[16px]">
-                        {userContext.user?.username}
-                      </p>
-                      <img src={logoButtom} alt="" />
+                      {userContext.user?.profile ? (
+                        <>
+                          <img
+                            src={userContext.user?.profile}
+                            className="h-[40px] w-[40px] rounded-[50%] bg-primary"
+                            alt="User Avatar"
+                          ></img>
+                          <p className="text-primary text-[16px]">
+                            {userContext.user?.username}
+                          </p>
+                          <img src={logoButtom} alt="" />
+                        </>
+                      ) : (
+                        <p className="text-primary mb-3 flex gap-2">
+                          {userContext.user?.username}
+                          <img src={logoButtom} alt="" />
+                        </p>
+                      )}
                     </div>
                     <ul
                       tabIndex={0}
-                      className="dropdown-content hover:bg-hover transition-all z-[1] mt-2 menu p-2 text-secondary border border-collapse border-secondary shadow bg-base-100 rounded-box w-52"
+                      className="dropdown-content text-lg hover:bg-hover transition-all z-[1] mt-2 menu p-2 text-secondary border border-collapse border-secondary shadow bg-base-100 rounded-box w-[150px]"
                     >
                       <li>
                         <Logout />
-                      </li>
-                      <li>
-                        {userContext.user?.id}
                       </li>
                     </ul>
                   </div>

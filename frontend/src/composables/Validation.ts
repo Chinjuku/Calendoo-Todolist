@@ -1,8 +1,8 @@
 import { ZodType, z } from "zod"
-import { AddNoteData, ListData, AddBoardData } from "./Validation.types";
+import { AddNoteData, ListData, AddBoardData, ProjectData, ContactData, LoginData } from "./Validation.types";
 
 // @/components/Home/ContactForm.tsx
-export const contactSchema = z.object({
+export const contactSchema: ZodType<ContactData> = z.object({
     username: z.string().min(2, {
       message: "Username must be at least 2 characters.",
     }),
@@ -16,7 +16,7 @@ export const contactSchema = z.object({
 })
 
 // @/components/pages/Project.tsx
-export const projectSchema = z.object({
+export const projectSchema: ZodType<ProjectData> = z.object({
     project: z.string().min(2, {
       message: "Username must be at least 2 characters.",
     }),
@@ -64,4 +64,12 @@ export const addBoardSchema: ZodType<AddBoardData> = z.object({
   boardname: z.string().min(2, {
     message: "Name board must be at least 2 characters.",
   }),
+})
+
+// @/components/auth/Login.tsx
+export const loginSchema: ZodType<LoginData> = z.object({
+  email: z.string().email("This is not a valid email."),
+  password: z.string().min(1, {
+    message: "Password must be at least 1 character.",
+  })
 })

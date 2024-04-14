@@ -1,7 +1,7 @@
 // @/Notes/AddList.tsx
 export type ListData = {
-    namelist: string,
-    color: string,
+    namelist: string
+    color: string
 }
 
 // @/Notes/AddNote.tsx
@@ -16,5 +16,22 @@ export type AddNoteData = {
 
 export interface AddBoardData {
     boardname: string
+}
+
+export type ProjectData = {
+    project: string
+    color: string
+}
+
+export type ContactData = {
+    username: string
+    email: string
+    location: string
+    message: string
+}
+
+export interface LoginData {
+    email: string
+    password: string
 }
 

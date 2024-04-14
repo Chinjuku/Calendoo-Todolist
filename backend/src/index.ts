@@ -41,6 +41,30 @@ app.use('/api/project', projectRoutes)
 // Boards
 app.post('/api/board', boardRoutes)
 
+// // Websockets
+// const http = require("http")
+
+// const httpServer = http.createServer((req:any, res:any)=> {
+//     console.log("got a request")
+// })
+
+// const WebSocketServer = require("websocket").server
+// let connection = null
+
+// const websocket = new WebSocketServer({
+//     "httpServer": httpServer
+// })
+// websocket.on("request", (req:any) => {
+//   connection =  req.accept(null, req.origin)
+//   connection.on("open", () => console.log("connection opened"))
+//   connection.on("close",() => console.log("connection closed"))
+//   connection.on("message",(msg: any) => console.log("client msg", msg.utf8Data))
+// })
+// let ws = new WebSocket('ws://localhost:8080');
+// ws.onmessage = m => {handleMsgs(JSON.parse(m.data), ws)}
+// ws.send(JSON.stringify({event: "realtime"}))
+
+
 // Test port
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}!`);
@@ -64,3 +88,7 @@ async function run() {
   }
 }
 run().catch(console.dir);
+
+function handleMsgs(arg0: any, ws: WebSocket) {
+  throw new Error("Function not implemented.");
+}

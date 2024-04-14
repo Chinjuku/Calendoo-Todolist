@@ -7,28 +7,7 @@ import { Element } from 'react-scroll';
 import { Toaster } from "@/components/ui/toaster";
 import { UserContextProvider } from "@/contexts/api-get/UserContext";
 
-
 function App() {
-    // userData?.id
-    // userData?.username
-    // userData?.email
-    // const showUser = async () => {
-    //   try {
-    //     const token = localStorage.getItem('token');
-    //     const response = await axios.post("http://localhost:8888/api/google-auth/refresh", {
-    //       headers: {
-    //           Authorization: `Bearer ${token}`,
-    //       },
-    //     });
-
-    //     if(response.status == 403) {
-    //       console.log("User not autorized")
-    //     }
-    //     console.log(response);
-    //   } catch (err) {
-    //     console.error(err);
-    //   }
-    // }
   return (
     <>
       <UserContextProvider>

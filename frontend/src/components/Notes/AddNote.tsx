@@ -11,23 +11,26 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
-import { toast } from "@/components/ui/use-toast";
 import { Input } from "@/components/ui/input";
 import { AddNoteSchema } from "@/composables/Validation";
 import DatePicker from "react-datepicker";
 import { BoolNoteCheck } from "@/composables/React.types";
 import { Calendar } from "lucide-react";
+import { useContext } from "react";
+import { ListContext } from "@/contexts/api-get/ListContext";
+import { createNote } from "@/api/post/createNote";
+import { UserContext } from "@/contexts/api-get/UserContext";
 
 const AddNote = (props: BoolNoteCheck) => {
+  const { list } = useContext(ListContext)
+  const { user } = useContext(UserContext)
   const form = useForm<z.infer<typeof AddNoteSchema>>({
     resolver: zodResolver(AddNoteSchema),
   });
   const onSubmit = (data: z.infer<typeof AddNoteSchema>) => {
     console.log(data);
-    toast({
-      title: "You add Note successfully.",
-    });
     props.checkClose(false)
+    createNote(data, user?.id)
   };
   return (
     <div
@@ -94,8 +97,13 @@ const AddNote = (props: BoolNoteCheck) => {
                           className="select w-full max-w-xs"
                         >
                           <option value="">Select Name Lists</option>
-                          <option value="work">Work</option>
-                          <option value="personal">Personal</option>
+                          {
+                            list && list.map((item) => {
+                              return (
+                                <option value={item.id} style={{color : `${item.color}`}}>{item.namelist}</option>
+                              )
+                            })
+                          }
                         </select>
                         <FormMessage className="text-[12px]" />
                       </FormItem>
