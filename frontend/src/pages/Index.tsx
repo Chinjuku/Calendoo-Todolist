@@ -2,7 +2,7 @@
 // import Notes from '@/pages/Notes.tsx'
 import Project from '@/pages/Project.tsx'
 import ProjectTasks from '@/pages/ProjectTasks.tsx'
-import { Error } from '@/pages/Error.tsx'
+import Error from '@/pages/Error.tsx'
 // import Authentication from '@/pages/Authentication.tsx'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import PrivateRoutes from '@/middleware/PrivateRoutes.tsx'
@@ -49,7 +49,7 @@ const Index = () => {
                     element={<App />}
                     errorElement={<Error />} // Apply middleware to this route
                     />
-                    <Route element={<PrivateRoutes value={true} />}>
+                    <Route element={<PrivateRoutes />}>
                         <Route path="/notes" element={<Notes />} errorElement={<Error />} />
                         <Route path="/project" element={<Project />} errorElement={<Error />} />
                     <Route
@@ -59,7 +59,8 @@ const Index = () => {
                     />
                     </Route>
                     <Route path="/auth" element={<Authentication />} errorElement={<Error />} />
-                    {/* <Route path="*" element={<Navigate to="/" />} /> Fallback route */}
+                    <Route path="/error" element={<Error />} />
+                    <Route path="*" element={<Error />} />
                 </Routes>
             </Suspense>
         </AuthProvider>

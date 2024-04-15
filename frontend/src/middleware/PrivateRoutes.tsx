@@ -1,11 +1,9 @@
 import { Outlet, Navigate } from 'react-router-dom';
 
-interface PrivateProps {
-    value : boolean
-}
 
-const PrivateRoutes = (props: PrivateProps) => {
-  return props.value ? <Outlet /> : <Navigate to="/auth" />;
+const PrivateRoutes = () => {
+  const token = localStorage.getItem('token');
+  return token || token === "" ? <Outlet /> : <Navigate to="/auth" />;
 };
 
 export default PrivateRoutes;

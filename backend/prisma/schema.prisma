@@ -31,7 +31,7 @@ model Note {
   description     String
   list List @relation(fields: [listId], references: [id])
   listId   String    @db.ObjectId
-  date      DateTime       
+  date      DateTime
   time      DateTime 
   piority Int
   user   User      @relation(fields: [userId], references: [id])

@@ -1,82 +1,27 @@
-import { PrismaClient } from "@prisma/client"
 import Router from "express"
+import { createNote, deleteNote, showNote, updateNote } from "../controllers/noteController/noteCRUD";
+import { showDate, showDateNote } from "../controllers/noteController/dateQuery";
+import { countAllNotes, countList, countToday } from "../controllers/noteController/countNote";
 
-const prisma = new PrismaClient()
 const router = Router();
 
-router.post('/create', async (req:any, res:any) => {
-    try {  
-        const { title, description, listId, date, time, piority, userId } = req.body
-        const addnotes = await prisma.note.create({
-            data: {
-                title: title,
-                description: description,
-                date: new Date(date),
-                time: new Date(time),
-                piority: piority,
-                listId: listId,
-                userId: userId
-            }
-        }).then((addnotes) => res.status(200).json(addnotes))
-        console.log(addnotes)
-    } catch (err) {
-        console.error(err);
-        return res.status(401).send(err)
-    }
-})
+router.post('/create', createNote)
 
-router.get('/show/:userId', async (req:any, res:any) => {
-    try {  
-        const userId = req.params.userId
-        const notes = await prisma.note.findMany({
-            where: { userId: userId },
-            include : {
-                list: true
-            }
-        })
-        console.log(notes)
-        return res.status(200).json(notes)
-    } catch (err) {
-        return res.status(401).send(err)
-    }
-})
+router.get('/show/:userId', showNote)
 
-router.put('/update/:noteId', async (req:any, res:any) => {
-    try {  
-        const { title, description, listId, date, time, piority } = req.body
-        const noteId = req.params.noteId
-        const updateNote = await prisma.note.update({
-            where: {
-              id: noteId  
-            },
-            data : {
-                title: title,
-                description: description,
-                date: new Date(date),
-                time: new Date(time),
-                piority: piority,
-                listId: listId
-            }
-        }).then((updateNote) => res.status(200).json(updateNote))
-        console.log("update note successfully!")
-    } catch (err) {
-        return res.status(401).send(err)
-    }
-})
+router.put('/update/:noteId', updateNote)
 
-router.delete('/delete/:noteId', async (req:any, res:any) => {
-    try {  
-        const noteId = req.params.noteId
-        const deleteNote = await prisma.note.delete({
-            where: {
-              id: noteId  
-            }
-        }).then((deleteNote) => res.status(200).json(deleteNote))
-        console.log("delete note successfully!")
-    } catch (err) {
-        return res.status(401).send(err)
-    }
-})
+router.delete('/delete/:noteId', deleteNote)
+
+router.get('/showdatenote/:userId/:date', showDateNote)
+
+router.get('/showdate/:userId', showDate)
+
+router.get("/show/countallnote/:userId", countAllNotes)
+
+router.get("/show/countlist/:userId/:listId", countList)
+
+router.get("/show/counttoday/:userId", countToday)
 
 export default router
 

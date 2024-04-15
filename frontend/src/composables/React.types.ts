@@ -47,3 +47,18 @@ export interface IColumn {
 export interface SwitchProps {
     handleSwitch: ( bools : boolean) => void;
 }
+
+export type UpdateNoteData = {
+    id: string
+    title: string;
+    description: string;
+    date: string;
+    time: string;
+    piority: number;
+    list: {
+        id: string;
+        namelist: string
+        color: string
+    }
+    userId: string;
+}

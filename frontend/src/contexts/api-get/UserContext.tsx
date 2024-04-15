@@ -1,6 +1,6 @@
 import React, { useState, createContext, useEffect } from "react"
 import axios from "axios";
-import { UserData } from "@/composables/apidata.types";
+import { UserData } from "../Data.type";
 
 type UserContextType = {
     user: UserData | null

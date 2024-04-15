@@ -83,6 +83,9 @@ dependencies:
   react:
     specifier: ^18.2.0
     version: 18.2.0
+  react-date-pagination:
+    specifier: ^1.0.2
+    version: 1.0.2(prop-types@15.8.1)(react-dom@18.2.0)(react@18.2.0)
   react-datepicker:
     specifier: ^6.6.0
     version: 6.6.0(react-dom@18.2.0)(react@18.2.0)
@@ -2803,6 +2806,10 @@ packages:
       p-limit: 3.1.0
     dev: true
 
+  /paginator@1.0.0:
+    resolution: {integrity: sha512-j2Y5AtF/NrXOEU9VVOQBGHnj81NveRQ/cDzySywqsWrAj+cxivMpMCkYJOds3ulQiDU4rQBWc0WoyyXMXOmuMA==}
+    dev: false
+
   /parent-module@1.0.1:
     resolution: {integrity: sha512-GQ2EWRpQV8/o+Aw8YqtfZZPfNRWZYkbidE9k5rpl/hC3vtHHBfGm2Ifi6qWV+coDGkrUKZAxE3Lot5kcsRlh+g==}
     engines: {node: '>=6'}
@@ -2944,6 +2951,22 @@ packages:
 
   /radash@7.1.0:
     resolution: {integrity: sha512-NOWTaF5YMY3mCgrNq9Fw9fK8yvJv92uqRb2StcVq5W8kcJ6949EbV2vk6nLJKAocYs29rzJafZZP1lFkEkoVGw==}
+    dev: false
+
+  /react-date-pagination@1.0.2(prop-types@15.8.1)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-CMQNMarBmBcUYgShRdg+Avmd8g7r0Rgw5D7oh9L794KYkaSQOIs3hAD19IUEQoxt2yCnasmWwTTft/BRV64xgQ==}
+    engines: {node: '>=8', npm: '>=5'}
+    peerDependencies:
+      prop-types: ^15.5.4
+      react: ^15.0.0 || ^16.0.0
+      react-dom: ^15.0.0 || ^16.0.0
+    dependencies:
+      classnames: 2.5.1
+      moment: 2.30.1
+      paginator: 1.0.0
+      prop-types: 15.8.1
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
     dev: false
 
   /react-datepicker@6.6.0(react-dom@18.2.0)(react@18.2.0):

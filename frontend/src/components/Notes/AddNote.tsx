@@ -18,7 +18,7 @@ import { BoolNoteCheck } from "@/composables/React.types";
 import { Calendar } from "lucide-react";
 import { useContext } from "react";
 import { ListContext } from "@/contexts/api-get/ListContext";
-import { createNote } from "@/api/post/createNote";
+import { createNote } from "@/api/post/Notes/createNote";
 import { UserContext } from "@/contexts/api-get/UserContext";
 
 const AddNote = (props: BoolNoteCheck) => {
@@ -28,7 +28,6 @@ const AddNote = (props: BoolNoteCheck) => {
     resolver: zodResolver(AddNoteSchema),
   });
   const onSubmit = (data: z.infer<typeof AddNoteSchema>) => {
-    console.log(data);
     props.checkClose(false)
     createNote(data, user?.id)
     window.location.reload()
