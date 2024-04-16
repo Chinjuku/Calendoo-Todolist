@@ -8,6 +8,7 @@ export type Setup2 = {
     check: boolean;
 }
 export interface CheckOpenNotes {
+    // handleSetDate: (day: string) => void
     handleSwitch: (bools: boolean) => void
     openSwitch: boolean
 }
@@ -61,4 +62,16 @@ export type UpdateNoteData = {
         color: string
     }
     userId: string;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    handleClose: (ok : any) => void;
 }
+
+export interface OpenModals {
+    [key: string]: boolean; // Define an index signature for string keys with boolean values
+  }
+  export interface OpenDelete {
+    [key: string]: boolean; // Define an index signature for string keys with boolean values
+  }
+  export interface PropsDate {
+    date: string;
+  }

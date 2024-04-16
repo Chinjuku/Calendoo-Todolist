@@ -1,21 +1,24 @@
 import { PrismaClient } from "@prisma/client"
 const prisma = new PrismaClient()
+import moment from "moment"
 
 export const createNote = async (req:any, res:any) => {
     try {  
         const { title, description, listId, date, time, piority, userId } = req.body
+        const formatdate = moment(date).format("YYYY-MM-DD")
+        console.log(formatdate)
         const addnotes = await prisma.note.create({
             data: {
                 title: title,
                 description: description,
-                date: new Date(date),
-                time: new Date(time),
+                date: new Date(formatdate),
+                time: new Date(`${formatdate}T${time}`),
                 piority: piority,
                 listId: listId,
                 userId: userId
             }
         }).then((addnotes) => res.status(200).json(addnotes))
-        // console.log(addnotes)
+        
     } catch (err) {
         console.error(err);
         return res.status(401).send(err)
@@ -52,7 +55,7 @@ export const updateNote = async (req:any, res:any) => {
                 description: description,
                 date: new Date(date),
                 time: new Date(time),
-                piority: piority,
+                piority: parseInt(piority),
                 listId: listId
             }
         }).then((updateNote) => res.status(200).json(updateNote))

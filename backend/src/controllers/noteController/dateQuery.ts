@@ -14,7 +14,7 @@ export const showDateNote = async (req:any, res:any) => {
             })
         }
         const notes = await prisma.note.findMany({
-            where: { date: new Date(`${date}T17:00:00.000+00:00`), userId: userId },
+            where: { date: new Date(`${date}`), userId: userId },
             include : {
                 list: true
             }

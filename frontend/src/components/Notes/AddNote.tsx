@@ -28,9 +28,9 @@ const AddNote = (props: BoolNoteCheck) => {
     resolver: zodResolver(AddNoteSchema),
   });
   const onSubmit = (data: z.infer<typeof AddNoteSchema>) => {
+    "use server"
     props.checkClose(false)
     createNote(data, user?.id)
-    window.location.reload()
   };
   return (
     <div

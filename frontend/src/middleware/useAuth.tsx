@@ -26,6 +26,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           title: "Login with Google Successfully!..",
         });
         localStorage.setItem("token", response.data.token);
+        const timeout =  60 * 60 * 10000;
+        setTimeout(function() {
+            // Remove data from localStorage
+            localStorage.removeItem('token');
+            window.location.reload();
+            navigate("/auth")
+        }, timeout);
+
       } else {
         toast({
             variant: "destructive",

@@ -11,7 +11,7 @@ import { ListContext } from "@/contexts/api-get/ListContext";
 import { updateNote } from "@/api/post/Notes/updateNote";
 
 export const UpdateNote = (props: UpdateNoteData) => {
-    const { list } = useContext(ListContext)
+  const { list } = useContext(ListContext)
   const [title, setTitle] = useState({ title: props.title, show: false });
   const [description, setDescription] = useState({ description: props.description, show: false });
   const [date, setDate] = useState<Date | null>(new Date(props.date)); // Use Date type for date state
@@ -25,10 +25,9 @@ export const UpdateNote = (props: UpdateNoteData) => {
     time: moment(props.time).format("HH:mm"),
     piority: props.piority,
     listId: props.list.id,
-    // userId: props.userId
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     if (name === "title") {
       setTitle({ ...title, title: value });
@@ -47,7 +46,7 @@ export const UpdateNote = (props: UpdateNoteData) => {
   const handleDateChange = (selectedDate: Date | null) => {
     const selectDate = moment(selectedDate).format("YYYY-MM-DD")
     setDate(selectedDate);
-    setFormData((prevFormData) => ({ ...prevFormData, date: selectDate })); // Update the form data with the selected date
+    setFormData((prevFormData) => ({ ...prevFormData, date: selectDate }));
 
   };
 
@@ -57,7 +56,7 @@ export const UpdateNote = (props: UpdateNoteData) => {
   };
 
   return (
-    <div className="bg-primary p-10 w-[700px] rounded-xl flex flex-col gap-4 m-h-[500px] text-secondary">
+    <div className="bg-primary p-10 w-full rounded-xl flex flex-col gap-4 m-h-[500px] text-secondary">
       <form onSubmit={handleSubmit} className="space-y-5">
         <h3 className="font-semibold text-[40px] flex gap-3">
           <div>Title :</div>
@@ -148,7 +147,7 @@ export const UpdateNote = (props: UpdateNoteData) => {
         <div className="flex justify-between items-center px-10">
           <div className="modal-action">
             <form method="dialog">
-              <Button className="btn w-[120px] h-12 text-lg font-bold">
+              <Button onClick={() => props.handleClose({})} className="btn w-[120px] h-12 text-lg font-bold">
                 Close
               </Button>
             </form>

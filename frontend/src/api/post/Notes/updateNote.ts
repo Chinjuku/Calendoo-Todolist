@@ -6,7 +6,7 @@ interface UpdateformData {
     description: string;
     date: string;
     time: string;
-    piority: string;
+    piority: number;
     listId: string;
 }
 
@@ -18,10 +18,11 @@ export const updateNote = async (data: UpdateformData, noteId: string | undefine
         description: data.description,
         date: data.date,
         time: formattedDate + "T" + data.time,
-        piority: parseInt(data.piority),
+        piority: data.piority,
         listId: data.listId,
     }
     console.log(updatedata);
+    window.location.reload()
     try {
         const res = await axios.put(`http://localhost:8888/api/note/update/${noteId}`, updatedata)
         console.log(res.data)
