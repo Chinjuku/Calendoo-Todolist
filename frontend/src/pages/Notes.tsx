@@ -10,6 +10,7 @@ import { ListContextProvider } from "@/contexts/api-get/ListContext";
 
 const Notes = () => {
   const [openSwitch, setOpenSwitch] = useState(true);
+
   return (
     <UserContextProvider>
       <ListContextProvider>
@@ -25,7 +26,10 @@ const Notes = () => {
             <div className="absolute top-[-33px] w-[245px] h-[66px] right-[90px] flex justify-center items-center bg-secondary1 text-primary text-[32px] font-bold">
               Notes
             </div>
-            <Menu handleSwitch={(bools) => setOpenSwitch(bools)} openSwitch={openSwitch} />
+            <Menu
+              handleSwitch={(bools) => setOpenSwitch(bools)}
+              openSwitch={openSwitch}
+            />
             {openSwitch ? <StickyNotes /> : <Calendar />}
           </div>
         </div>

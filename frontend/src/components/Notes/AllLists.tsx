@@ -1,3 +1,4 @@
+"use client"
 import { useContext, useEffect, useState } from "react";
 import AddList from "./AddList";
 import { ListContext } from "@/contexts/api-get/ListContext";
@@ -44,7 +45,11 @@ export const AllLists = () => {
               ></div>
               <p className="text-secondary">{list?.find(listItem => listItem.id === item.listId)?.namelist}</p>
             </div>
-            <p className="bg-hover1 px-2 py-1 rounded-[3px]">{item.count}</p>
+            <p className="bg-hover1 px-2 py-1 rounded-[3px]">
+                {
+                    item.count === 0 ? 0 : item.count 
+                }
+            </p>
           </div>
         ))}
       </div>
