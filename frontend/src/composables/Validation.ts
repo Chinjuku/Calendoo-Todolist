@@ -64,6 +64,9 @@ export const addBoardSchema: ZodType<AddBoardData> = z.object({
   boardname: z.string().min(2, {
     message: "Name board must be at least 2 characters.",
   }),
+  color: z.string({ required_error: 'Add your Color' }).min(1, {
+    message: "Choose your Color",
+  }),
 })
 
 // @/components/auth/Login.tsx

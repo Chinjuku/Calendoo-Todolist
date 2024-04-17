@@ -78,7 +78,6 @@ const StickyNotes = () => {
     const fetchDateResult = await queryDate(user?.id, formatDate);
     setNote(fetchDateResult);
   };
-  console.log(note)
 
   return (
     <div className="py-[15px] px-[30px] w-[71%] relative">

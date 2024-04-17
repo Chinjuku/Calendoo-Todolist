@@ -1,3 +1,13 @@
+export const colors = [
+    "orange",
+    "lightgreen",
+    "green",
+    "gold",
+    "pink",
+    "lightblue",
+    "lightgray",
+  ];
+
 type InitialData = {
     tasks: {
         [taskId: string]: {

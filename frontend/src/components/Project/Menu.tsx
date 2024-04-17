@@ -8,11 +8,15 @@ import { useState } from "react";
 import AddBoard from "./AddBoard"
 import "react-datepicker/dist/react-datepicker.css";
 
-const Menu = () => {
+interface ProjectNameProps {
+    projectname: string;
+}
+
+const Menu = (props: ProjectNameProps) => {
   const [openBoard, setOpenBoard] = useState(false);
   return (
     <div className="h-full w-[22%] bg-hover rounded-[26px] p-[22px] text-secondary">
-        <h1 className="Second text-[44px] text-center">Calendoo</h1>
+        <h1 className="Second text-[44px] text-center">{props.projectname}</h1>
         <div>
             <p className="Second text-[20px]">Tasks</p>
             <div className="text-[16px] h-[35px] w-full px-[20px] my-2 flex justify-between items-center">

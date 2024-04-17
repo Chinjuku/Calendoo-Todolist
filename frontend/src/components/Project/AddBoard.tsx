@@ -12,14 +12,23 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { addBoardSchema } from "@/composables/Validation";
+import { colors } from "@/composables/initial-data";
 
 const AddBoard = (props: AddBoardProps) => {
   const form = useForm<z.infer<typeof addBoardSchema>>({
     resolver: zodResolver(addBoardSchema),
     defaultValues: {
       boardname: "",
+      color: "",
     },
   });
 
@@ -28,10 +37,10 @@ const AddBoard = (props: AddBoardProps) => {
     console.log(values);
   }
   return (
-    <div className="absolute w-[295px] max-h-[300px] transition-all bg-secondary z-50 left-[20.5%] p-4 rounded-xl">
+    <div className="absolute w-[295px] max-h-[600px] transition-all bg-secondary z-50 left-[20.5%] py-6 px-8 rounded-xl">
       <h1 className="text-primary text-[36px] font-bold text-center">Add Board</h1>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
           <FormField
             control={form.control}
             name="boardname"
@@ -41,10 +50,48 @@ const AddBoard = (props: AddBoardProps) => {
                 <FormControl>
                   <Input placeholder="" {...field} />
                 </FormControl>
-                <FormMessage />
+                <FormMessage className="text-xs" />
               </FormItem>
             )}
           />
+          <FormField
+              control={form.control}
+              name="color"
+              render={({ field }) => (
+                <FormItem>
+                  <h1 className="text-white">Color</h1>
+                  <div className="flex items-center gap-2">
+                    {field.value != null ? (
+                      <div
+                        className={`w-7 h-6`}
+                        style={{ backgroundColor: `${field.value}` }}
+                      ></div>
+                    ) : null}
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger className="rounded-[5px] outline-none">
+                          <SelectValue placeholder="Select Color" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent className="font-bold rounded">
+                        {colors.map((colors) => (
+                          <SelectItem
+                            className="focus:bg-secondary1 rounded"
+                            value={colors}
+                          >
+                            {colors}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <FormMessage className="text-[12px]" />
+                </FormItem>
+              )}
+            />
           <div className="flex justify-around">
           <Button onClick={() => props.handleSetup(false)} className="bg-transparent text-white font-bold border-2 border-white" type="button">Cancel</Button>
           <Button type="submit">Create</Button>

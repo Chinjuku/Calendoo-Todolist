@@ -16,6 +16,7 @@ export type AddNoteData = {
 
 export interface AddBoardData {
     boardname: string
+    color: string
 }
 
 export type ProjectData = {

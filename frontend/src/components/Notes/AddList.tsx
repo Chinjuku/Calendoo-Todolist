@@ -25,7 +25,7 @@ import { ListSchema } from "@/composables/Validation";
 import { createList } from "@/api/post/createList";
 import { useContext } from "react";
 import { UserContext } from "@/contexts/api-get/UserContext";
-const colors = ["orange", "lightgreen", "green", "gold", "pink", "lightblue", "lightgray"];
+import { colors } from "@/composables/initial-data";
 
 const AddList = (props: BooleanCheck) => {
   const userContext = useContext(UserContext);

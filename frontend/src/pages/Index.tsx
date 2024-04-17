@@ -53,7 +53,7 @@ const Index = () => {
                         <Route path="/notes" element={<Notes />} errorElement={<Error />} />
                         <Route path="/project" element={<Project />} errorElement={<Error />} />
                     <Route
-                        path="/project/:nameproject"
+                        path="/project/:projectId"
                         element={<ProjectTasks />}
                         errorElement={<Error />}
                     />
