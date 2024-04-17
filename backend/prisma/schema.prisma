@@ -20,6 +20,7 @@ model User {
   email   String   @unique
   password String?
   profile String?
+  refresh String?
   notes   Note[]
   projects   Project[]
   lists List[]

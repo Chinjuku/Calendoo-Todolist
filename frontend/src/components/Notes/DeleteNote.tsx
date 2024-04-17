@@ -13,7 +13,7 @@ interface DeleteNote {
 export const DeleteNote = (props: DeleteNote) => {
     const onDelete = () => {
         deleteNote(props.id)
-        props.handleAlert(false)
+        props.handleAlert(false)    
     }
   return (
     <Alert variant="destructive" className="text-[26px] px-10 flex flex-col gap-1">

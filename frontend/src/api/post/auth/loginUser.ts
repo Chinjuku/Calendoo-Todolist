@@ -10,7 +10,7 @@ export const loginUser = async (data: LoginData) => {
                 variant: "success",
                 title: "Login User Successfully!..",
             });
-            localStorage.setItem("token", response.data.token);
+            localStorage.setItem("token", response.data.refresh_token);
         }
     } catch (err) {
         toast({

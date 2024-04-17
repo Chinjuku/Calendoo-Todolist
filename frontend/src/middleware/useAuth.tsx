@@ -18,14 +18,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const loginUser = async (credentialResponse: unknown) => {
     try {
-    //   console.log(credentialResponse);
-      const response = await axios.post("http://localhost:8888/api/google-auth/google-login", credentialResponse);
+      const response = await axios.post("http://localhost:8888/api/google-auth/login", credentialResponse);
+      console.log(response.data)
       if (response.status == 200) {
         toast({
           variant: "success",
           title: "Login with Google Successfully!..",
         });
-        localStorage.setItem("token", response.data.token);
+        localStorage.setItem("token", response.data.refresh_token);
         const timeout =  60 * 60 * 10000;
         setTimeout(function() {
             // Remove data from localStorage

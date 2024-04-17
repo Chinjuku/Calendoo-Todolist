@@ -1,29 +1,41 @@
 import { PrismaClient } from "@prisma/client"
-import { generateRefreshToken, generateToken } from "../../utils/jwtHelper"
+import { jwtGenerate, jwtRefreshTokenGenerate } from "../../utils/jwtHelper";
 
 const prisma = new PrismaClient()
 
-export const getrefreshToken = (req:any, res:any) => {
-    const user = prisma.user.findMany({
+export const refreshPage = async (req: any, res: any) => {
+    const user = await prisma.user.findFirst({
         where: {
             id: req.user.id,
             email: req.user.email,
-            username: req.user.username
         }
     })
-    const access_token = generateToken(user)
-    const refresh_token = generateRefreshToken(user)
-  
-    return res.json({
-      access_token,
-      refresh_token,
-    })
-  }
 
-export const getAllUser = (req:any, res:any) => {
-    // console.log(req.user.username)
-    const user = req.user;
-    res.json({ user: { id: user.id, username: user.username, email: user.email, profile: user.profile } });
+    const userIndex = await prisma.user.findFirst({
+        where: {
+            refresh: req.user.token
+        }
+    });
+
+    if (!user || !userIndex) return res.sendStatus(401)
+
+    const access_token = jwtGenerate(user)
+    const refresh_token = jwtRefreshTokenGenerate(user)
+
+    await prisma.user.update({
+        where: {
+            id: user.id // Assuming user has an 'id' field
+        },
+        data: {
+            refresh: refresh_token
+        }
+    });
+
+    return res.json({
+        access_token,
+        refresh_token,
+        user
+    })
 }
 
 export const getAll = async (req: any, res: any) => {
@@ -33,10 +45,3 @@ export const getAll = async (req: any, res: any) => {
         return res.status(401).send(error)
     }
 }
-
-// export const logoutUser = (req:any, res:any) => {
-//     return res
-//     .clearCookie("access_token")
-//     .status(200)
-//     .json({ message: "Successfully logged out 😏 🍀" });
-// }
