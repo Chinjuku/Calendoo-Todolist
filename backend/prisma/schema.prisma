@@ -59,7 +59,7 @@ model Project {
 
 model Board {
   id      String @id @default(auto()) @map("_id") @db.ObjectId
-  boardname String
+  boardname String @unique
   color String
   isStarred Boolean
   project   Project      @relation(fields: [projectId], references: [id])
@@ -69,12 +69,20 @@ model Board {
 
 model Task {
   id String @id @default(auto()) @map("_id") @db.ObjectId
+  taskname String @unique
+  board   Board      @relation(fields: [boardId], references: [id])
+  boardId   String    @db.ObjectId
+  tasklist TaskList[]
+}
+
+model TaskList {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
   title String
   description String
   piority Int
   createdAt  DateTime  @default(now())
-  board   Board      @relation(fields: [boardId], references: [id])
-  boardId   String    @db.ObjectId
+  task   Task      @relation(fields: [taskId], references: [id])
+  taskId String @db.ObjectId
 }
 
 model Contact {

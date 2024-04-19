@@ -22,8 +22,11 @@ import {
 import { Input } from "@/components/ui/input";
 import { addBoardSchema } from "@/composables/Validation";
 import { colors } from "@/composables/initial-data";
+import { createBoard } from "@/api/post/Board/createBoard";
+import { useParams } from "react-router-dom";
 
 const AddBoard = (props: AddBoardProps) => {
+  const { projectId } = useParams();
   const form = useForm<z.infer<typeof addBoardSchema>>({
     resolver: zodResolver(addBoardSchema),
     defaultValues: {
@@ -34,7 +37,7 @@ const AddBoard = (props: AddBoardProps) => {
 
   // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof addBoardSchema>) {
-    console.log(values);
+    createBoard(values.boardname, values.color, projectId)
   }
   return (
     <div className="absolute w-[295px] max-h-[600px] transition-all bg-secondary z-50 left-[20.5%] py-6 px-8 rounded-xl">
@@ -59,14 +62,14 @@ const AddBoard = (props: AddBoardProps) => {
               name="color"
               render={({ field }) => (
                 <FormItem>
-                  <h1 className="text-white">Color</h1>
-                  <div className="flex items-center gap-2">
-                    {field.value != null ? (
+                  <h1 className="text-white flex items-center gap-2 mb-3">Color{field.value != null && (
                       <div
                         className={`w-7 h-6`}
                         style={{ backgroundColor: `${field.value}` }}
                       ></div>
-                    ) : null}
+                    )}</h1>
+                  
+                  <div className="flex items-center gap-2">
                     <Select
                       onValueChange={field.onChange}
                       defaultValue={field.value}
@@ -76,7 +79,7 @@ const AddBoard = (props: AddBoardProps) => {
                           <SelectValue placeholder="Select Color" />
                         </SelectTrigger>
                       </FormControl>
-                      <SelectContent className="font-bold rounded">
+                      <SelectContent className="font-bold rounded w-full">
                         {colors.map((colors) => (
                           <SelectItem
                             className="focus:bg-secondary1 rounded"

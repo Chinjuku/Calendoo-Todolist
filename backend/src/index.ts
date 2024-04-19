@@ -8,6 +8,7 @@ import projectRoutes from './routes/project';
 import noteRoutes from './routes/note';
 import contactRoutes from './routes/contact';
 import listRoutes from './routes/list';
+import taskRoutes from './routes/task';
 
 require("dotenv").config();
 const app = express();
@@ -22,6 +23,7 @@ app.use(cors({
   methods: ["GET", "POST", "PUT", "DELETE"]
 }))
 app.use(cookieParser());
+
 // User
 app.use("/api/google-auth", googleAuthRoutes)
 app.use("/api/user", authRoutes)
@@ -29,7 +31,7 @@ app.use("/api/user", authRoutes)
 // Contacts
 app.use('/api/contact', contactRoutes)
 
-//Lists
+// Lists
 app.use('/api/list', listRoutes);
 
 // Notes
@@ -39,7 +41,13 @@ app.use('/api/note', noteRoutes)
 app.use('/api/project', projectRoutes)
 
 // Boards
-app.post('/api/board', boardRoutes)
+app.use('/api/board', boardRoutes)
+
+// Tasks
+app.use('/api/task', taskRoutes)
+
+// TaskLists
+app.use('/api/tasklist', taskRoutes)
 
 // // Websockets
 // const http = require("http")

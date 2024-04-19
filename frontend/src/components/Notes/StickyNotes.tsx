@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 "use client";
-import { useEffect, useState, useContext, SetStateAction } from "react";
+import { useEffect, useState, useContext, SetStateAction, useRef } from "react";
 import Bin from "/public/svg/bin.svg";
 import { showDate } from "@/api/get/Notes/getDates";
 import { UserContext } from "@/contexts/api-get/UserContext";
-import { NoteData } from "@/composables/Validation.types";
+import { NoteData } from "@/composables/React.types";
 import moment from "moment";
 import { TbEdit } from "react-icons/tb";
 // @ts-expect-error
@@ -21,8 +21,12 @@ import { MdKeyboardDoubleArrowUp } from "react-icons/md";
 import { OpenDelete, OpenModals } from "@/composables/React.types";
 import DatePicker from "react-datepicker";
 
+interface DateProps {
+  date: string
+}
+
 const StickyNotes = () => {
-  const [date, setDate] = useState<NoteData[] | null>(null);
+  const date = useRef<DateProps[] | null>(null);
   const [note, setNote] = useState<NoteData[] | null>(null);
   const [allnotes, setAllNotes] = useState<NoteData[] | null>(null);
   const [openModals, setOpenModals] = useState<OpenModals>({});
@@ -33,12 +37,12 @@ const StickyNotes = () => {
   useEffect(() => {
     const fetchData = async () => {
       const fetchDate = await showDate(user?.id);
-      setDate(fetchDate);
+      date.current = fetchDate;
       const fetchTodayNote = await queryDate(user?.id, today);
       setNote(fetchTodayNote);
     };
     fetchData();
-  }, [user?.id]);
+  }, [user?.id, today]);
   const toggleModal = (id: string) => {
     setOpenModals((prevState) => ({
       ...prevState,
@@ -58,7 +62,7 @@ const StickyNotes = () => {
   };
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const daysArray =
-    date?.map((date) => ({ date: moment(date.date).format("YYYY-MM-DD") })) ||
+    date.current?.map((date) => ({ date: moment(date.date).format("YYYY-MM-DD") })) ||
     [];
   daysArray.push({ date: "" });
   const handlePageChange = async (pageNumber: number) => {
@@ -108,6 +112,7 @@ const StickyNotes = () => {
         {note != null && note.length != 0
           ? note.map((data) => (
               <div
+                key={data.id}
                 className="rounded-[12px] w-full h-[196px] relative p-4"
                 style={{ backgroundColor: `${data.list.color}` }}
               >

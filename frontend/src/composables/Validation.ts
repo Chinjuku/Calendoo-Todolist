@@ -1,5 +1,5 @@
 import { ZodType, z } from "zod"
-import { AddNoteData, ListData, AddBoardData, ProjectData, ContactData, LoginData, RegisterData } from "./Validation.types";
+import { AddNoteData, ListData, AddBoardData, ProjectData, ContactData, LoginData, RegisterData, TaskData } from "@/composables/Validation.types";
 
 // @/components/Home/ContactForm.tsx
 export const contactSchema: ZodType<ContactData> = z.object({
@@ -84,5 +84,11 @@ export const registerSchema: ZodType<RegisterData> = z.object({
   email: z.string().email("This is not a valid email."),
   password: z.string().min(8, {
     message: "Password must be at least 8 character.",
+  })
+})
+
+export const taskSchema: ZodType<TaskData> = z.object({
+  taskname: z.string().min(2, {
+    message: "Task name must be at least 2 character.",
   })
 })

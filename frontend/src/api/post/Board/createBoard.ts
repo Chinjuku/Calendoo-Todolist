@@ -2,23 +2,25 @@ import { toast } from "@/components/ui/use-toast";
 import axios from "axios";
 
 
-export const createBoard = async (project: string, color: string, userId: string | undefined) => {
+export const createBoard = async (board: string, color: string, projectId: string | undefined) => {
     const data = {
-        projectname: project,
-        userId: userId,
+        boardname: board,
         color: color,
+        isStarred: false,
+        projectId: projectId,
     }
+    console.log(data)
     try {
-        const res = await axios.post("http://localhost:8888/api/project/create", data)
+        const res = await axios.post("http://localhost:8888/api/board/create", data)
         // .then(res => console.log(res.status))
-        console.log(res.status)
+        console.log(res.data)
         if (res.status === 200) {
             toast({
                 variant: "success",
                 title: "You add list to Lists successfully.",
                 description:
                     "Your name list is: " +
-                    project +
+                    board +
                     " & Your color is: " +
                     color,
             });
@@ -28,7 +30,7 @@ export const createBoard = async (project: string, color: string, userId: string
     } catch (err) {
         toast({
             variant: "destructive",
-            title: project + " already add to Project!!",
+            title: board + " already add to Project!!",
         });
     }
 

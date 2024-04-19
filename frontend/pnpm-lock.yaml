@@ -6,7 +6,7 @@ settings:
 
 dependencies:
   '@dnd-kit/core':
-    specifier: ^6.0.5
+    specifier: ^6.1.0
     version: 6.1.0(react-dom@18.2.0)(react@18.2.0)
   '@fontsource/anek-telugu':
     specifier: ^4.5.2
@@ -83,6 +83,9 @@ dependencies:
   react:
     specifier: ^18.2.0
     version: 18.2.0
+  react-cookie-consent:
+    specifier: ^9.0.0
+    version: 9.0.0(react@18.2.0)
   react-date-pagination:
     specifier: ^1.0.2
     version: 1.0.2(prop-types@15.8.1)(react-dom@18.2.0)(react@18.2.0)
@@ -2550,6 +2553,10 @@ packages:
     resolution: {integrity: sha512-gFqAIbuKyyso/3G2qhiO2OM6shY6EPP/R0+mkDbyspxKazh8BXDC5FiFsUjlczgdNz/vfra0da2y+aHrusLG/Q==}
     hasBin: true
 
+  /js-cookie@2.2.1:
+    resolution: {integrity: sha512-HvdH2LzI/EAZcUwA8+0nKNtWHqS+ZmijLA30RwZA0bo7ToCckjK5MkGhjED9KoRcXO6BaGI3I9UIzSA1FKFPOQ==}
+    dev: false
+
   /js-tokens@4.0.0:
     resolution: {integrity: sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ==}
 
@@ -2951,6 +2958,16 @@ packages:
 
   /radash@7.1.0:
     resolution: {integrity: sha512-NOWTaF5YMY3mCgrNq9Fw9fK8yvJv92uqRb2StcVq5W8kcJ6949EbV2vk6nLJKAocYs29rzJafZZP1lFkEkoVGw==}
+    dev: false
+
+  /react-cookie-consent@9.0.0(react@18.2.0):
+    resolution: {integrity: sha512-Blyj+m+Zz7SFHYqT18p16EANgnSg2sIyU6Yp3vk83AnOnSW7qnehPkUe4+8+qxztJrNmCH5GP+VHsWzAKVOoZA==}
+    engines: {node: '>=10'}
+    peerDependencies:
+      react: '>=16'
+    dependencies:
+      js-cookie: 2.2.1
+      react: 18.2.0
     dev: false
 
   /react-date-pagination@1.0.2(prop-types@15.8.1)(react-dom@18.2.0)(react@18.2.0):

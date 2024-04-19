@@ -19,20 +19,20 @@ export const UserContextProvider = ({ children }: UserContextProviderProps) => {
         const showUser = async () => {
             try {
               const gettoken = localStorage.getItem('token');
-              const response = await axios.get('http://localhost:8888/api/google-auth/refresh', {
+              const response = await axios.get('http://localhost:8888/api/google-auth/userold', {
+            //   const response = await axios.get('http://localhost:8888/api/google-auth/refresh', {
                 headers: {
                     Authorization: `Bearer ${gettoken}`,
                 },
               });
               const data = response.data.user
-              if (response.status === 403) {
-                localStorage.removeItem('token');
-                window.location.reload();
-              }
-              localStorage.setItem('token', response.data.refresh_token)
+            //   localStorage.setItem('token', response.data.refresh_token)
+              console.log(data)
               setUser(data)
             } catch (err) {
               console.error(err);
+            //   localStorage.removeItem('token');
+            //   window.location.reload();
             }
         }
         showUser()

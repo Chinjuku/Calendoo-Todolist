@@ -40,6 +40,7 @@ export interface IElement {
     content: string;
     column: string;
 }
+
 export interface IColumn {
     heading: string;
     elements: IElement[];
@@ -74,4 +75,24 @@ export interface OpenModals {
   }
   export interface PropsDate {
     date: string;
+  }
+
+  export type NoteData = {
+    userId: string
+    listId: string
+    id: string
+    title: string;
+    description: string;
+    date: string;
+    time: string;
+    piority: number;
+    list: {
+        id: string
+        namelist: string
+        color: string
+    }
+}
+
+export type BoardProps = {
+    id: string
   }

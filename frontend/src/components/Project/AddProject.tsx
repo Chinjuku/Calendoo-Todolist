@@ -142,7 +142,7 @@ export const AddProject = () => {
           <hr className="border-2 border-secondary" />
           <div className="mt-[30px] grid grid-cols-4 h-[472px] gap-7 overflow-y-auto px-[20px]">
             {/* Mapping Show Project Names */}
-            {project?.map((data) => (
+            {project && project.map((data) => (
                 <button onClick={() => navigate(`/project/${data.id}`)} key={data.id} style={{backgroundColor : `${data.color}`}} className="w-full rounded-lg h-[120px] flex items-center justify-center text-[22px] font-bold text-secondary">
                 {data.projectname}
                 </button>

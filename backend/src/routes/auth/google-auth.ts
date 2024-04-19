@@ -1,8 +1,8 @@
 import { OAuth2Client } from "google-auth-library";
 import { PrismaClient } from "@prisma/client";
 import { Router } from "express";
-import { jwtRefreshTokenValidate, jwtValidate } from "../../controllers/authController/middleware";
-import { loginGoogle } from "../../controllers/authController/loginController";
+import { authorization, jwtRefreshTokenValidate, jwtValidate } from "../../controllers/authController/middleware";
+import { loginGoogle, loginGoogleOld } from "../../controllers/authController/loginController";
 import { refreshPage } from "../../controllers/authController/userController";
 
 const router = Router();
@@ -20,5 +20,13 @@ router.get("/user", jwtValidate, (req: any, res: any) => {
 })
 
 router.get("/refresh", jwtRefreshTokenValidate, refreshPage)
+
+router.post("/loginold", loginGoogleOld)
+
+router.get("/userold", authorization , (req:any, res:any) => {
+    // console.log(req.user.username)
+    const user = req.user;
+    res.json({ user: { id: user.id, username: user.username, email: user.email } });
+})
 
 export default router;

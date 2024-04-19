@@ -36,8 +36,8 @@ export const AllLists = () => {
       <p className="Second text-[20px]">Lists</p>
       <div className="h-[120px] overflow-y-auto">
         {/* Mapping Data Here */}
-        {noteperList?.map((item) => (
-          <div className="text-[16px] h-[35px] w-full px-[15px] my-2 flex justify-between items-center">
+        {noteperList && noteperList.map((item) => (
+          <div key={item.listId} className="text-[16px] h-[35px] w-full px-[15px] my-2 flex justify-between items-center">
             <div className="flex gap-[20px] w-[60%]">
               <div
                 className={`h-[26px] w-[28px]`}

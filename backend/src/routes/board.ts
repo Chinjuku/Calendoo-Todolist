@@ -1,14 +1,18 @@
-import { PrismaClient } from "@prisma/client"
 import Router from "express"
 import { createBoard } from "../controllers/boardController/boardCRUD";
-import { showBoard } from "../controllers/boardController/queryBoard";
+import { showBoard, showFirstBoard, updateStar } from "../controllers/boardController/queryBoard";
+import { countBoards } from "../controllers/boardController/countBoard";
 
-const prisma = new PrismaClient()
 const router = Router();
 
 router.post("/create", createBoard)
 
-router.get("/show",  showBoard)
+router.get("/show/:projectId",  showBoard)
 
+router.get("/showfirst/:projectId", showFirstBoard)
+
+router.get("/count/:projectId", countBoards)
+
+router.put("/updatestar", updateStar)
 
 export default router;

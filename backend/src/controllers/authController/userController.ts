@@ -17,7 +17,7 @@ export const refreshPage = async (req: any, res: any) => {
         }
     });
 
-    if (!user || !userIndex) return res.sendStatus(401)
+    if (!user || !userIndex) return console.log("Not Match")
 
     const access_token = jwtGenerate(user)
     const refresh_token = jwtRefreshTokenGenerate(user)

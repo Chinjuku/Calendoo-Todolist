@@ -30,7 +30,7 @@ const Authentication = React.lazy(() => {
 const App = React.lazy(() => {
     return Promise.all([
         import("@/pages/App.tsx"),
-        new Promise(resolve => setTimeout(resolve, 800))
+        new Promise(resolve => setTimeout(resolve, 1500))
         ])
         .then(([moduleExports]) => moduleExports);
     });
@@ -45,9 +45,9 @@ const Index = () => {
                 <Routes>
                     <Route path='/check' element={<div>{isAuthenticated == true ? "true" : "false"}</div>} />
                     <Route
-                    path="/"
-                    element={<App />}
-                    errorElement={<Error />} // Apply middleware to this route
+                        path="/"
+                        element={<App />}
+                        errorElement={<Error />} // Apply middleware to this route
                     />
                     <Route element={<PrivateRoutes />}>
                         <Route path="/notes" element={<Notes />} errorElement={<Error />} />
