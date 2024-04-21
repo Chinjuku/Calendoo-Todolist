@@ -1,36 +1,36 @@
 import { FC, useMemo } from "react";
 import { styled } from "@stitches/react";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import * as _ from "radash";
 import Add from "/svg/Add.svg"
 import { Droppable } from "../../primitives";
 import { DraggableElement } from "./DraggableElement";
 import { IColumn } from "@/composables/React.types";
 
-export const Column: FC<IColumn> = ({ heading, elements }) => {
-  const columnIdentifier = useMemo(() => _.camal(heading), [heading]);
-
+export const Column: FC<IColumn> = ({ id, heading, elements }) => {
+  const columnIdentifier = heading;
   const amounts = useMemo(
-    () => elements.filter((elm) => elm.column === columnIdentifier).length,
+    () => elements.filter((elm) => elm.taskname === columnIdentifier).length,
     [elements, columnIdentifier]
   );
-
+  // console.log(id, columnIdentifier, elements, amounts)
   const handleAddList = (column : string) => {
     alert(column)
   }
 
   return (
-    <div id={columnIdentifier}> {/* Wrap the column with Draggable */}
+    <div id={id}> {/* Wrap the column with Draggable */}
       <div className="w-[295px] border-dashed border-2 border-black border-opacity-65 p-[10px] rounded-[10px] overflow-y-hidden overflow-x-hidden">
         <ColumnHeaderWrapper className="bg-secondary">
           <p className="font-bold text-primary text-lg">{heading}</p>
           <ColumnTasksAmout>{amounts}</ColumnTasksAmout>
         </ColumnHeaderWrapper>
-        <Droppable id={columnIdentifier}>
+        <Droppable id={id}>
           {elements.map((elm, elmIndex) => (
             <DraggableElement
-              key={`draggable-element-${elmIndex}-${columnIdentifier}`}
+              key={`draggable-element-${elmIndex}-${id}`}
               identifier={elm.id}
-              content={elm.content}
+              content={elm.title}
             />
           ))}
           <DropPlaceholder />

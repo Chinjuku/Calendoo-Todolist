@@ -9,6 +9,7 @@ import noteRoutes from './routes/note';
 import contactRoutes from './routes/contact';
 import listRoutes from './routes/list';
 import taskRoutes from './routes/task';
+import tasklistRoutes from './routes/tasklist';
 
 require("dotenv").config();
 const app = express();
@@ -47,7 +48,7 @@ app.use('/api/board', boardRoutes)
 app.use('/api/task', taskRoutes)
 
 // TaskLists
-app.use('/api/tasklist', taskRoutes)
+app.use('/api/tasklist', tasklistRoutes)
 
 // // Websockets
 // const http = require("http")

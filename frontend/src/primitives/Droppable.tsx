@@ -8,7 +8,7 @@ interface IDroppable {
 
 export const Droppable: FC<IDroppable> = ({ id, children }) => {
   const { isOver, setNodeRef } = useDroppable({ id });
-
+  // console.log(id)
   const style = useMemo(
     () => ({
       opacity: isOver ? 0.5 : 1,

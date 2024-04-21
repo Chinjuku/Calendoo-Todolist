@@ -3,11 +3,16 @@ const prisma = new PrismaClient()
 
 export const showTaskLists = async (req:any, res:any) => {
     try {
-        const taskId = req.params.taskId
+        const boardId = req.params.boardId
         const showtasklist = await prisma.taskList.findMany({
             where: { 
-                taskId: taskId
-            }
+                task: {
+                    boardId: boardId
+                }
+            },
+            include : {
+                task: true
+            },
         }).then((showtasklist) => res.status(200).send(showtasklist))
         console.log(showtasklist)
     } catch (err) {

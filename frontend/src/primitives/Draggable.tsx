@@ -8,7 +8,7 @@ interface IDraggable {
 
 export const Draggable: FC<IDraggable> = ({ id, children }) => {
   const { attributes, listeners, setNodeRef, transform } = useDraggable({ id });
-
+  // console.log(id)
   const style = useMemo(() => {
     if (transform) {
       return {

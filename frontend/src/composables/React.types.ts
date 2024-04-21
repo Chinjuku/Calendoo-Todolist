@@ -37,11 +37,15 @@ export interface IDraggableElement {
 // @/components/Project/Column
 export interface IElement {
     id: string;
-    content: string;
-    column: string;
+    title: string;
+    taskname: string;
+    description: string;
+    piority: number;
+    taskId: string;
 }
 
 export interface IColumn {
+    id: string;
     heading: string;
     elements: IElement[];
 }

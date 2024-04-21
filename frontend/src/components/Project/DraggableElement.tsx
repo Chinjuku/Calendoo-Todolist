@@ -8,6 +8,7 @@ export const DraggableElement: FC<IDraggableElement> = ({
   content,
 }) => {
   const itemIdentifier = useMemo(() => identifier, [identifier]);
+  // const [isDragging, setIsDragging] = useState(false);
   const handleClick = (itemIdentifier: string) => {
       alert(itemIdentifier);
   }
@@ -18,8 +19,16 @@ export const DraggableElement: FC<IDraggableElement> = ({
         <ElementWrapper>
             <ElementText>{content}</ElementText>
         </ElementWrapper>
-        <Button onClick={() => handleClick(itemIdentifier)} className="absolute bottom-2 right-2">Edit</Button>
       </Draggable>
+      {/* {!isDragging && ( // Render button only if not dragging
+            <Button
+              onClick={() => handleClick(itemIdentifier)}
+              className="absolute bottom-2 right-2"
+            >
+              Edit
+            </Button>
+          )} */}
+      <Button onClick={() => handleClick(itemIdentifier)} className="absolute bottom-2 right-2">Edit</Button>
     </div>
     
   );
