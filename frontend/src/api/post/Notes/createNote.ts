@@ -16,7 +16,6 @@ export const createNote = async (data: AddNoteData, userId: string | undefined) 
         userId: userId
     }
     console.log(addnotedata);
-    window.location.reload()
     try {
         const res = await axios.post("http://localhost:8888/api/note/create", addnotedata)
         console.log(res.data)

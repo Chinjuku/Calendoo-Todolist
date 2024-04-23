@@ -124,7 +124,7 @@ const AddNote = (props: BoolNoteCheck) => {
                           <DatePicker
                             className="py-[10px] px-[15px] text-secondary font-bold rounded-[10px]"
                             onChange={(date) => field.onChange(date)}
-                            selected={field.value}
+                            selected={field.value || new Date()}
                             dateFormat="dd/MM/yyyy"
                           />
                         </div>

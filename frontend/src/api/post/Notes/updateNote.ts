@@ -22,7 +22,6 @@ export const updateNote = async (data: UpdateformData, noteId: string | undefine
         listId: data.listId,
     }
     console.log(updatedata);
-    window.location.reload()
     try {
         const res = await axios.put(`http://localhost:8888/api/note/update/${noteId}`, updatedata)
         console.log(res.data)

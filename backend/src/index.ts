@@ -50,29 +50,10 @@ app.use('/api/task', taskRoutes)
 // TaskLists
 app.use('/api/tasklist', tasklistRoutes)
 
-// // Websockets
-// const http = require("http")
-
-// const httpServer = http.createServer((req:any, res:any)=> {
-//     console.log("got a request")
-// })
-
-// const WebSocketServer = require("websocket").server
-// let connection = null
-
-// const websocket = new WebSocketServer({
-//     "httpServer": httpServer
-// })
-// websocket.on("request", (req:any) => {
-//   connection =  req.accept(null, req.origin)
-//   connection.on("open", () => console.log("connection opened"))
-//   connection.on("close",() => console.log("connection closed"))
-//   connection.on("message",(msg: any) => console.log("client msg", msg.utf8Data))
-// })
-// let ws = new WebSocket('ws://localhost:8080');
-// ws.onmessage = m => {handleMsgs(JSON.parse(m.data), ws)}
-// ws.send(JSON.stringify({event: "realtime"}))
-
+// const WebSocket = require("ws");
+// const http = require("http");
+// const server = http.createServer();
+// const wss = new WebSocket.Server({ server });
 
 // Test port
 app.listen(port, () => {

@@ -1,58 +1,68 @@
-"use client"
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import AddList from "./AddList";
 import { ListContext } from "@/contexts/api-get/ListContext";
 import { Setup2 } from "@/composables/React.types";
 import Add from "/svg/Add.svg";
 import { countList } from "@/api/get/Notes/countAllNote";
 import { UserContext } from "@/contexts/api-get/UserContext";
+import { useQuery } from "@tanstack/react-query";
 
 interface CountList {
-    count: number;
-    listId: string;
+  count: number;
+  listId: string;
 }
 
 export const AllLists = () => {
   const { user } = useContext(UserContext);
   const { list } = useContext(ListContext);
-  const [noteperList, setnoteperList] = useState<CountList[] | null>(null);
   const [openList, setopenList] = useState<Setup2>({ check: false });
-  useEffect(() => {
-    const fetchData = async () => {
-      if (!user?.id || !list?.length) return; // Early return if no user or empty list
+  // Fetch data using useQuery
+  const { data: noteperList, isLoading } = useQuery<CountList[] | null>({
+    queryKey : ["noteperList", user?.id, list?.length, list],
+    queryFn : async () => {
+      if (!user?.id || !list?.length) return null;
       const notesPerList = await Promise.all(
-        list.map(async (list) => {
-          const count = await countList(user.id, list.id);
-          return { listId: list.id, count }; // Combine list ID and notes
+        list.map(async (listItem) => {
+          const count = await countList(user.id, listItem.id);
+          return { listId: listItem.id, count }; // Combine list ID and notes
         })
       );
-      setnoteperList(notesPerList);
-    };
-    fetchData();
-  }, [user?.id, list?.length, list]); // Only re-run on user ID or list length change
+      return notesPerList;
+    },
+    enabled :!!user?.id &&!!list?.length,
+    refetchInterval : 500,
+    refetchIntervalInBackground : true,
+    refetchOnWindowFocus : false,
+    refetchOnReconnect : false,
+    refetchOnMount : false,
+  });
 
   return (
     <div>
       <p className="Second text-[20px]">Lists</p>
-      <div className="h-[120px] overflow-y-auto">
-        {/* Mapping Data Here */}
-        {noteperList && noteperList.map((item) => (
-          <div key={item.listId} className="text-[16px] h-[35px] w-full px-[15px] my-2 flex justify-between items-center">
-            <div className="flex gap-[20px] w-[60%]">
-              <div
-                className={`h-[26px] w-[28px]`}
-                style={{ backgroundColor: list?.find(listItem => listItem.id === item.listId)?.color }}
-              ></div>
-              <p className="text-secondary">{list?.find(listItem => listItem.id === item.listId)?.namelist}</p>
+      {isLoading ? (
+        <div>Loading...</div>
+      ) : (
+        <div className="h-[120px] overflow-y-auto">
+          {/* Mapping Data Here */}
+          {noteperList && noteperList.map((item) => (
+            <div key={item.listId} className="text-[16px] h-[35px] w-full px-[15px] my-2 flex justify-between items-center">
+              <div className="flex gap-[20px] w-[60%]">
+                <div
+                  className={`h-[26px] w-[28px]`}
+                  style={{ backgroundColor: list?.find(listItem => listItem.id === item.listId)?.color }}
+                ></div>
+                <p className="text-secondary">{list?.find(listItem => listItem.id === item.listId)?.namelist}</p>
+              </div>
+              <p className="bg-hover1 px-2 py-1 rounded-[3px]">
+                  {
+                      item.count === 0 ? 0 : item.count 
+                  }
+              </p>
             </div>
-            <p className="bg-hover1 px-2 py-1 rounded-[3px]">
-                {
-                    item.count === 0 ? 0 : item.count 
-                }
-            </p>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
       <button
         onClick={() =>
           setopenList((prevOpenNote) => ({ ...prevOpenNote, check: true }))
@@ -72,3 +82,4 @@ export const AllLists = () => {
     </div>
   );
 };
+

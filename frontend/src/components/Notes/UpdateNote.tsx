@@ -47,12 +47,12 @@ export const UpdateNote = (props: UpdateNoteData) => {
     const selectDate = moment(selectedDate).format("YYYY-MM-DD")
     setDate(selectedDate);
     setFormData((prevFormData) => ({ ...prevFormData, date: selectDate }));
-
   };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     updateNote(formData, props.id)
+    props.handleClose({})
   };
 
   return (

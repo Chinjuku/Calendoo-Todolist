@@ -20,29 +20,23 @@ import { MdKeyboardArrowUp } from "react-icons/md";
 import { MdKeyboardDoubleArrowUp } from "react-icons/md";
 import { OpenDelete, OpenModals } from "@/composables/React.types";
 import DatePicker from "react-datepicker";
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
 interface DateProps {
   date: string
 }
 
 const StickyNotes = () => {
+  const queryClient = useQueryClient()
   const date = useRef<DateProps[] | null>(null);
   const [note, setNote] = useState<NoteData[] | null>(null);
   const [allnotes, setAllNotes] = useState<NoteData[] | null>(null);
   const [openModals, setOpenModals] = useState<OpenModals>({});
   const [activePage, setActivePage] = useState(0);
+  const [startDate, setStartDate] = useState(new Date());
   const [alert, setAlert] = useState<OpenDelete>({});
   const { user } = useContext(UserContext);
-  const today = moment(new Date()).format('YYYY-MM-DD');
-  useEffect(() => {
-    const fetchData = async () => {
-      const fetchDate = await showDate(user?.id);
-      date.current = fetchDate;
-      const fetchTodayNote = await queryDate(user?.id, today);
-      setNote(fetchTodayNote);
-    };
-    fetchData();
-  }, [user?.id, today]);
+  const userId = user?.id ?? ""
   const toggleModal = (id: string) => {
     setOpenModals((prevState) => ({
       ...prevState,
@@ -54,11 +48,6 @@ const StickyNotes = () => {
       ...prevState,
       [id]: !prevState[id], // Toggle the state for the specific note id
     }));
-  };
-  const handleSetAllNotes = async () => {
-    setNote(null);
-    const fetchAllNote = await showNotes(user?.id);
-    setAllNotes(fetchAllNote);
   };
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const daysArray =
@@ -76,11 +65,53 @@ const StickyNotes = () => {
     const open: any = document.getElementById(`my_modal_${id}`);
     open.showModal();
   };
-  const [startDate, setStartDate] = useState(new Date());
-  const handleDateSelect = async (date: Date) => {
+  const { data: allnote, isLoading: allnoteLoading } = useQuery(
+    {
+    queryKey: ["allnote"],
+    queryFn: () => showNotes(userId),
+    // enabled: !!userId, // Only fetch data if user ID is available
+    refetchInterval: 300
+    }
+  );
+  const today = moment(new Date()).format('YYYY-MM-DD');
+  const { data: changeNote, isLoading: changeNoteLoading} = useQuery(
+    {
+    queryKey: ["changeNote", userId, today],
+    queryFn: () => queryDate(userId, today),
+    // enabled: !!userId,
+    refetchInterval: 300
+    }
+  );
+  const handleDateSelect = (date: Date) => {
     const formatDate = moment(date).format("YYYY-MM-DD");
-    const fetchDateResult = await queryDate(user?.id, formatDate);
-    setNote(fetchDateResult);
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    return useMutation(
+      {
+        mutationFn: async () => {
+          await queryDate(userId, formatDate)
+        },
+        onSuccess: () => {
+          queryClient.invalidateQueries({ queryKey: ["changeNote", userId, formatDate] })
+        },
+        onError: (error) => {
+          console.log(error);
+        },
+      }
+    )
+  };
+  useEffect(() => {
+    const fetchData = async () => {
+      const fetchDate = await showDate(userId);
+      date.current = fetchDate;
+    };
+    if(changeNote) {
+      setNote(changeNote);
+    }
+    fetchData();
+  }, [userId, changeNote]);
+  const handleSetAllNotes = async () => {
+    setNote(null);
+    setAllNotes(allnote);
   };
 
   return (
@@ -109,7 +140,7 @@ const StickyNotes = () => {
       </div>
       <div className="grid grid-cols-3 p-2 pr-5 auto-rows-max gap-4 h-[88%] overflow-auto">
         {/* Mapping Query Data per day */}
-        {note != null && note.length != 0
+        { allnoteLoading || changeNoteLoading ? <div>Loading</div> : note != null && note.length != 0
           ? note.map((data) => (
               <div
                 key={data.id}
@@ -194,7 +225,7 @@ const StickyNotes = () => {
               </div>
             ))
           : allnotes != null
-          ? allnotes?.map((item) => (
+          ? allnotes.map((item) => (
               <div
                 className="rounded-[12px] w-full h-[196px] relative p-4"
                 style={{ backgroundColor: `${item.list.color}` }}
