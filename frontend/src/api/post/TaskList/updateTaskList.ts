@@ -8,12 +8,12 @@ export const updateTaskList = async (id : string, itemOnDrop: any) => {
         id: id,
         taskId: itemOnDrop
     }
-    console.log(data);
+    // console.log(data);
     try {
         const res = await axios.put("http://localhost:8888/api/tasklist/update/taskId", data)
-        console.log(res.status)
+        // console.log(res.status)
         if (res.status === 200) {
-            window.location.reload()
+            // window.location.reload()
             toast({
                 variant: "success",
                 title: "You move tasklist to task successfully.",

@@ -1,29 +1,59 @@
-import { FC, useMemo } from "react";
+import { FC, useMemo, useState } from "react";
 import { styled } from "@stitches/react";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import * as _ from "radash";
-import Add from "/svg/Add.svg"
+import Add from "/svg/Add.svg";
 import { Droppable } from "../../primitives";
 import { DraggableElement } from "./DraggableElement";
 import { IColumn } from "@/composables/React.types";
+import { AddTaskList } from "./AddTaskList";
+import { MdDeleteForever } from "react-icons/md";
+import { DeleteTask } from "@/components/Project/DeleteTask";
+import { Modal } from "flowbite-react";
 
 export const Column: FC<IColumn> = ({ id, heading, elements }) => {
+  const [openBox, setOpenBox] = useState(false);
+  const [openAlert, setOpenAlert] = useState(false);
   const columnIdentifier = heading;
   const amounts = useMemo(
     () => elements.filter((elm) => elm.taskname === columnIdentifier).length,
     [elements, columnIdentifier]
   );
-  // console.log(id, columnIdentifier, elements, amounts)
-  const handleAddList = (column : string) => {
-    alert(column)
-  }
 
   return (
-    <div id={id}> {/* Wrap the column with Draggable */}
+    <div id={id}>
+      {" "}
+      {/* Wrap the column with Draggable */}
       <div className="w-[295px] border-dashed border-2 border-black border-opacity-65 p-[10px] rounded-[10px] overflow-y-hidden overflow-x-hidden">
-        <ColumnHeaderWrapper className="bg-secondary">
+        <ColumnHeaderWrapper className="bg-secondary flex items-center">
           <p className="font-bold text-primary text-lg">{heading}</p>
-          <ColumnTasksAmout>{amounts}</ColumnTasksAmout>
+          <div className="flex gap-2 items-center">
+            <ColumnTasksAmout>{amounts}</ColumnTasksAmout>
+            {amounts === 0 && (
+              <div>
+                <button
+                  onClick={() => setOpenAlert(true)}
+                  className="text-white"
+                >
+                  <MdDeleteForever className="mt-1 w-7 h-7" />
+                </button>
+              </div>
+            )}
+            {openAlert && (
+              <Modal
+                show={openAlert}
+                size={"3xl"}
+                onClose={() => setOpenAlert(false)}
+              >
+                <Modal.Body className="bg-red-100 rounded-xl">
+                  <DeleteTask
+                    id={id}
+                    setOpenAlert={(bools) => setOpenAlert(bools)}
+                  />
+                </Modal.Body>
+              </Modal>
+            )}
+          </div>
         </ColumnHeaderWrapper>
         <Droppable id={id}>
           {elements.map((elm, elmIndex) => (
@@ -35,10 +65,16 @@ export const Column: FC<IColumn> = ({ id, heading, elements }) => {
           ))}
           <DropPlaceholder />
         </Droppable>
-        <button onClick={() => handleAddList(columnIdentifier)} className="bg-white w-full py-2 rounded-md flex justify-center">
-            <img src={Add} alt="" />
+        <button
+          onClick={() => setOpenBox(true)}
+          className="bg-white w-full py-2 rounded-md flex justify-center"
+        >
+          <img src={Add} alt="" />
         </button>
       </div>
+      {openBox && (
+        <AddTaskList id={id} setOpen={(bools) => setOpenBox(bools)} />
+      )}
     </div>
   );
 };

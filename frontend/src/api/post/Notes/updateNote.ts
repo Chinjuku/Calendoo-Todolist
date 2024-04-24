@@ -21,7 +21,7 @@ export const updateNote = async (data: UpdateformData, noteId: string | undefine
         piority: data.piority,
         listId: data.listId,
     }
-    console.log(updatedata);
+    // console.log(updatedata);
     try {
         const res = await axios.put(`http://localhost:8888/api/note/update/${noteId}`, updatedata)
         console.log(res.data)

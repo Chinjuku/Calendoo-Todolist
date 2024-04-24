@@ -9,13 +9,21 @@ import "react-datepicker/dist/react-datepicker.css";
 import TimeMaker from "../ui/TimeMaker";
 import { ListContext } from "@/contexts/api-get/ListContext";
 import { updateNote } from "@/api/post/Notes/updateNote";
+// import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export const UpdateNote = (props: UpdateNoteData) => {
-  const { list } = useContext(ListContext)
+  //   const queryClient = useQueryClient()
+  const { list } = useContext(ListContext);
   const [title, setTitle] = useState({ title: props.title, show: false });
-  const [description, setDescription] = useState({ description: props.description, show: false });
+  const [description, setDescription] = useState({
+    description: props.description,
+    show: false,
+  });
   const [date, setDate] = useState<Date | null>(new Date(props.date)); // Use Date type for date state
-  const [time, setTime] = useState({ time: moment(props.time).format("HH:mm"), show: false });
+  const [time, setTime] = useState({
+    time: moment(props.time).format("HH:mm"),
+    show: false,
+  });
   const [piority, setPiority] = useState({ piority: props.piority });
   const [listId, setlistId] = useState({ listId: props.list.id, show: false });
   const [formData, setFormData] = useState({
@@ -27,32 +35,45 @@ export const UpdateNote = (props: UpdateNoteData) => {
     listId: props.list.id,
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     const { name, value } = e.target;
     if (name === "title") {
       setTitle({ ...title, title: value });
     } else if (name === "description") {
       setDescription({ ...description, description: value });
     } else if (name === "time") {
-        setTime({...time, time: value });
+      setTime({ ...time, time: value });
     } else if (name === "piority") {
-        setPiority({...piority, piority: parseInt(value) });
+      setPiority({ ...piority, piority: parseInt(value) });
     } else if (name === "listId") {
-        setlistId({...listId, listId: value });
+      setlistId({ ...listId, listId: value });
     }
     setFormData((prevFormData) => ({ ...prevFormData, [name]: value }));
   };
 
   const handleDateChange = (selectedDate: Date | null) => {
-    const selectDate = moment(selectedDate).format("YYYY-MM-DD")
+    const selectDate = moment(selectedDate).format("YYYY-MM-DD");
     setDate(selectedDate);
     setFormData((prevFormData) => ({ ...prevFormData, date: selectDate }));
   };
+  //   const mutation = useMutation({
+  //     mutationFn: async (formatDate: string) => {
+  //     await queryDate(userId, formatDate);
+  //     },
+  //     onSuccess: () => {
+  //       queryClient.invalidateQueries({ queryKey: ["changeNote"] });
+  //     },
+  //     onError: () => {
+  //       console.log("error");
+  //     },
+  //   });
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    updateNote(formData, props.id)
-    props.handleClose({})
+    updateNote(formData, props.id);
+    props.handleClose({});
   };
 
   return (
@@ -91,29 +112,33 @@ export const UpdateNote = (props: UpdateNoteData) => {
         <p className="flex text-xl gap-2">
           List :
           <select
-          onChange={handleChange}
-          name="listId" id="" className="border-none bg-primary focus:bg-white">
+            onChange={handleChange}
+            name="listId"
+            id=""
+            className="border-none bg-primary focus:bg-white"
+          >
             <option value={props.list.id}>{props.list.namelist}</option>
-            {
-                list?.map((item) => {
-                    if (item.id != props.list.id)
-                    return (
-                        <option value={item.id} key={item.id}>
-                        {item.namelist}
-                        </option>
-                    );
-                })
-  
-            }
+            {list?.map((item) => {
+              if (item.id != props.list.id)
+                return (
+                  <option value={item.id} key={item.id}>
+                    {item.namelist}
+                  </option>
+                );
+            })}
           </select>
         </p>
         <p className="flex text-xl gap-2 items-center">
           Date :
-          <DatePicker selected={date} className="bg-primary text-[20px] border-none focus:bg-white active:border-blue-600" onChange={handleDateChange} />
+          <DatePicker
+            selected={date}
+            className="bg-primary text-[20px] border-none focus:bg-white active:border-blue-600"
+            onChange={handleDateChange}
+          />
         </p>
         <p className="flex text-xl gap-5 items-center">
           Time :
-          <TimeMaker 
+          <TimeMaker
             name="time"
             className={`text-[20px] h-[20px] mb-[-10px] min-w-[300px]`}
             value={time.time}
@@ -127,35 +152,42 @@ export const UpdateNote = (props: UpdateNoteData) => {
         </p>
         <p className="flex text-xl gap-5 items-center">
           Piority :
-          <select 
-          defaultValue={props.piority}
-          onChange={handleChange}
-          name="piority" id="" className="border-none bg-primary focus:bg-white">
-            {
-                ["1", "2", "3"].map((piority) => {
-                    // if (piority != props.piority)
-                    return (
-                        <option value={parseInt(piority)} key={piority}>
-                        {piority}
-                        </option>
-                    );
-                })
-  
-            }
+          <select
+            defaultValue={props.piority}
+            onChange={handleChange}
+            name="piority"
+            id=""
+            className="border-none bg-primary focus:bg-white"
+          >
+            {["1", "2", "3"].map((piority) => {
+              // if (piority != props.piority)
+              return (
+                <option value={parseInt(piority)} key={piority}>
+                  {piority}
+                </option>
+              );
+            })}
           </select>
         </p>
         <div className="flex justify-between items-center px-10">
           <div className="modal-action">
             <form method="dialog">
-              <Button onClick={() => props.handleClose({})} className="btn w-[120px] h-12 text-lg font-bold">
+              <Button
+                onClick={() => props.handleClose({})}
+                className="btn w-[120px] h-12 text-lg font-bold"
+              >
                 Close
               </Button>
             </form>
           </div>
-          <Button type="submit" className="btn mt-6 h-12 w-[120px] text-lg font-bold">Submit</Button>
+          <Button
+            type="submit"
+            className="btn mt-6 h-12 w-[120px] text-lg font-bold"
+          >
+            Submit
+          </Button>
         </div>
       </form>
     </div>
   );
 };
-

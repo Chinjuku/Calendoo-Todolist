@@ -20,14 +20,13 @@ import { MdKeyboardArrowUp } from "react-icons/md";
 import { MdKeyboardDoubleArrowUp } from "react-icons/md";
 import { OpenDelete, OpenModals } from "@/composables/React.types";
 import DatePicker from "react-datepicker";
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 
 interface DateProps {
   date: string
 }
 
 const StickyNotes = () => {
-  const queryClient = useQueryClient()
   const date = useRef<DateProps[] | null>(null);
   const [note, setNote] = useState<NoteData[] | null>(null);
   const [allnotes, setAllNotes] = useState<NoteData[] | null>(null);
@@ -61,16 +60,11 @@ const StickyNotes = () => {
     const result = await queryDate(user?.id, dateFormat);
     setNote(result);
   };
-  const showModal = (id: string) => {
-    const open: any = document.getElementById(`my_modal_${id}`);
-    open.showModal();
-  };
   const { data: allnote, isLoading: allnoteLoading } = useQuery(
     {
     queryKey: ["allnote"],
     queryFn: () => showNotes(userId),
-    // enabled: !!userId, // Only fetch data if user ID is available
-    refetchInterval: 300
+    enabled: !!userId,
     }
   );
   const today = moment(new Date()).format('YYYY-MM-DD');
@@ -78,37 +72,32 @@ const StickyNotes = () => {
     {
     queryKey: ["changeNote", userId, today],
     queryFn: () => queryDate(userId, today),
-    // enabled: !!userId,
-    refetchInterval: 300
+    enabled: !!userId || !!today,
     }
   );
-  const handleDateSelect = (date: Date) => {
+  const { data: dates } = useQuery({
+    queryKey: ["dates"],
+    queryFn: () => showDate(userId),
+    enabled: !!userId,
+  })
+  const handleDateSelect = async (date: Date) => {
+    if (!userId) return;
     const formatDate = moment(date).format("YYYY-MM-DD");
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    return useMutation(
-      {
-        mutationFn: async () => {
-          await queryDate(userId, formatDate)
-        },
-        onSuccess: () => {
-          queryClient.invalidateQueries({ queryKey: ["changeNote", userId, formatDate] })
-        },
-        onError: (error) => {
-          console.log(error);
-        },
-      }
-    )
+    const responseData = await queryDate(userId, formatDate);
+    console.log(responseData);
+    setNote(responseData);
   };
   useEffect(() => {
-    const fetchData = async () => {
-      const fetchDate = await showDate(userId);
-      date.current = fetchDate;
-    };
+    if (dates) {
+      date.current = dates
+    }
     if(changeNote) {
       setNote(changeNote);
     }
-    fetchData();
-  }, [userId, changeNote]);
+    if(allnote) {
+      setAllNotes(allnote);
+    }
+  }, [dates, changeNote, allnote]);
   const handleSetAllNotes = async () => {
     setNote(null);
     setAllNotes(allnote);
@@ -254,15 +243,20 @@ const StickyNotes = () => {
                     </p>
                   )}
                 </div>
-                <button onClick={() => showModal(item.id)}>
+                <button onClick={() => toggleModal(item.id)}>
                   <TbEdit className="absolute bottom-2 right-[42px] w-8 h-8" />
                 </button>
-                <dialog
-                  id={`my_modal_${item.id}`}
-                  className="modal bg-opacity-65"
-                >
-                  <div className="w-[700px]">
+                {openModals[item.id] && (
+                <Modal
+                    show={openModals[item.id]}
+                    size={"3xl"}
+                    onClose={() => toggleModal(item.id)}
+                  >
+                  <Modal.Body className="bg-primary rounded-xl">
                     <UpdateNote
+                      handleClose={(ok: SetStateAction<OpenModals>) =>
+                        setOpenModals(ok)
+                      }
                       title={item.title}
                       description={item.description}
                       list={{
@@ -275,10 +269,10 @@ const StickyNotes = () => {
                       time={item.time}
                       piority={item.piority}
                       userId={item.userId}
-                      handleClose={(ok) => setOpenModals(ok)}
                     />
-                  </div>
-                </dialog>
+                    </Modal.Body>
+                  </Modal>
+                )}
                 <button onClick={() => toggleAlert(item.id)}>
                   <img
                     className="absolute bottom-3 right-2 w-7 h-7 font-bold"

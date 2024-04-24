@@ -46,3 +46,8 @@ export interface TaskData {
     taskname: string
 }
 
+export interface TaskListData {
+    title: string
+    description: string
+    piority: number
+}

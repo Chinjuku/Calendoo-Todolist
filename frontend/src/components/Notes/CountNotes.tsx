@@ -14,7 +14,6 @@ export const CountNotes = () => {
     queryKey: ["allnotes"],
     queryFn: () => countAllNotes(userId),
     enabled: !!userId, // Only fetch data if user ID is available
-    refetchInterval: 2000
     }
   );
 
@@ -23,7 +22,6 @@ export const CountNotes = () => {
         queryKey: ["today"],
         queryFn: () => countToday(userId),
         enabled: !!userId, // Only fetch data if user ID is available
-        refetchInterval: 2000
     }
   );
 

@@ -1,32 +1,32 @@
 import { toast } from "@/components/ui/use-toast";
+import { TaskListData } from "@/composables/Validation.types";
 import axios from "axios";
 
 
-export const createTask = async (taskname: string, boardId: string | undefined) => {
+export const createTaskList = async (getdata: TaskListData, taskId: string) => {
     const data = {
-        taskname: taskname,
-        boardId: boardId
+        title: getdata.title,
+        description: getdata.description,
+        piority: getdata.piority,
+        taskId: taskId
     }
     console.log(data);
     try {
-        const res = await axios.post("http://localhost:8888/api/task/create", data)
-        // .then(res => console.log(res.status))
+        const res = await axios.post("http://localhost:8888/api/tasklist/create", data)
         console.log(res.status)
         if (res.status === 200) {
-            // window.location.reload()
             toast({
                 variant: "success",
                 title: "You add task to board successfully.",
                 description:
-                    "Your name task is: " +
-                    taskname
+                    "Your name task is: "
             });
         }
         
     } catch (err) {
         toast({
             variant: "destructive",
-            title: taskname + " already add to Project!!",
+            title:  "Have error to create task list",
         });
     }
 

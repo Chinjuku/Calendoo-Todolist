@@ -54,13 +54,13 @@ const Menu = (props: ProjectNameProps) => {
         <div className="text-[16px] h-[35px] w-full px-[20px] my-2 flex justify-between items-center">
           <div className="flex gap-[25px] w-[35%]">
             <img height={23} width={23} src={Today} alt="" />
-            <p className="text-secondary">Member</p>
+            <p className="text-secondary">Tasks</p>
           </div>
           <p className="bg-hover1 px-2 py-1 rounded-[3px]">{55}</p>
         </div>
         <button className="hover:bg-hover1 rounded-[10px] transition-all text-[16px] h-[35px] gap-[25px] w-full px-[16px] my-2 flex items-center">
           <img height={27} width={27} src={Stickywall} alt="" />
-          <p className="text-secondary">Boards</p>
+          <p className="text-secondary">Board</p>
         </button>
         <button className="hover:bg-hover1 rounded-[10px] transition-all text-[16px] h-[35px] gap-[25px] w-full px-[20px] my-2 flex items-center">
           <img height={22} width={22} src={Calendars} alt="" />

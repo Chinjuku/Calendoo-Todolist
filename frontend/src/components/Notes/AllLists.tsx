@@ -30,11 +30,6 @@ export const AllLists = () => {
       return notesPerList;
     },
     enabled :!!user?.id &&!!list?.length,
-    refetchInterval : 500,
-    refetchIntervalInBackground : true,
-    refetchOnWindowFocus : false,
-    refetchOnReconnect : false,
-    refetchOnMount : false,
   });
 
   return (

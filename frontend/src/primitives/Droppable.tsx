@@ -12,6 +12,7 @@ export const Droppable: FC<IDroppable> = ({ id, children }) => {
   const style = useMemo(
     () => ({
       opacity: isOver ? 0.5 : 1,
+      border: isOver ? "2px dashed green" : "none",
     }),
     [isOver]
   );
