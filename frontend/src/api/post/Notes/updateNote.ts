@@ -5,7 +5,8 @@ interface UpdateformData {
     title: string;
     description: string;
     date: string;
-    time: string;
+    starttime: string;
+    endtime: string;
     piority: number;
     listId: string;
 }
@@ -17,7 +18,8 @@ export const updateNote = async (data: UpdateformData, noteId: string | undefine
         title: data.title,
         description: data.description,
         date: data.date,
-        time: formattedDate + "T" + data.time,
+        starttime: formattedDate + "T" + data.starttime,
+        endtime: formattedDate + "T" + data.endtime,
         piority: data.piority,
         listId: data.listId,
     }

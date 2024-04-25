@@ -5,16 +5,22 @@ import Stickywall from "/svg/Stickywall.svg";
 import Add from "/svg/Add.svg";
 // import Time from "/svg/Time.svg"
 import { useEffect, useState } from "react";
-import AddBoard from "./AddBoard";
+import AddBoard from "./Board/AddBoard";
 import "react-datepicker/dist/react-datepicker.css";
 import { showBoards } from "@/api/get/Board/getBoard";
 import { useParams } from "react-router-dom";
 import { countBoards } from "@/api/get/Board/countBoards";
+import { useQuery } from "@tanstack/react-query";
+import { countTasks } from "@/api/get/Task/countTasks";
+import { LoadData } from "../LoadData";
+import "@/css/projectmenu.css"
 
 interface ProjectNameProps {
   projectname: string;
   showBoard: (id: string, name: string, isStarred: boolean) => void;
   id: string;
+  handleSwitch: (bools: boolean) => void
+  openSwitch: boolean
 }
 interface BoardData {
   boardname: string;
@@ -27,18 +33,51 @@ interface BoardData {
 const Menu = (props: ProjectNameProps) => {
   const { projectId } = useParams();
   const [board, setBoard] = useState<BoardData[] | null>(null);
-  const [countBoard, setCountBoard] = useState<number>(0);
+  const [boardCount, setBoardCount] = useState<number>(0);
+  const [taskCount, setTaskCount] = useState<number>(0);
   const [openBoard, setOpenBoard] = useState(false);
+  const pId = projectId ?? "";
+  const { data: countTask, isLoading: countTaskLoad } = useQuery({
+    queryKey: ["countTask", pId],
+    queryFn: async () => {
+      const result = await countTasks(pId);
+      return result;
+    },
+    enabled: !!pId,
+  });
+  const { data: countBoard, isLoading: countBoardLoad } = useQuery({
+    queryKey: ["countBoard", pId],
+    queryFn: async () => {
+      const result = await countBoards(pId);
+      return result;
+    },
+    enabled: !!pId,
+  });
+  const { data: allBoard, isLoading: allBoardLoad } = useQuery({
+    queryKey: ["allBoard", pId],
+    queryFn: async () => {
+      const result = await showBoards(pId);
+      return result;
+    },
+    enabled: !!pId,
+  });
+
   useEffect(() => {
-    const fetchData = async () => {
-      if (!projectId) return; // Early return if no user or empty list
-      const boards = await showBoards(projectId);
-      setBoard(boards);
-      const countboard = await countBoards(projectId);
-      setCountBoard(countboard);
-    };
-    fetchData();
-  }, [projectId]);
+    if (countTask) {
+      setTaskCount(countTask);
+    }
+    if (countBoard) {
+      setBoardCount(countBoard);
+    }
+    if (allBoard) {
+      setBoard(allBoard);
+    }
+  }, [countTask, countBoard, allBoard]);
+  function handleOpen(id: string, boardname: string, isStarred: boolean) {
+    props.showBoard(id, boardname, isStarred)
+    props.handleSwitch(false);
+  }
+
   return (
     <div className="h-full w-[22%] bg-hover rounded-[26px] p-[22px] text-secondary">
       <h1 className="Second text-[44px] text-center">{props.projectname}</h1>
@@ -49,20 +88,34 @@ const Menu = (props: ProjectNameProps) => {
             <img height={22} width={22} src={All} alt="" />
             <p className="text-secondary">All Boards</p>
           </div>
-          <p className="bg-hover1 px-2 py-1 rounded-[3px]">{countBoard}</p>
+          <p className="bg-hover1 px-2 py-1 rounded-[3px]">
+            {countBoardLoad ? <LoadData /> : boardCount}
+          </p>
         </div>
         <div className="text-[16px] h-[35px] w-full px-[20px] my-2 flex justify-between items-center">
           <div className="flex gap-[25px] w-[35%]">
             <img height={23} width={23} src={Today} alt="" />
             <p className="text-secondary">Tasks</p>
           </div>
-          <p className="bg-hover1 px-2 py-1 rounded-[3px]">{55}</p>
+          <p className="bg-hover1 px-2 py-1 rounded-[3px]">
+            {countTaskLoad ? <LoadData /> : taskCount}
+          </p>
         </div>
-        <button className="hover:bg-hover1 rounded-[10px] transition-all text-[16px] h-[35px] gap-[25px] w-full px-[16px] my-2 flex items-center">
+        <button
+          onClick={() => props.handleSwitch(false)}
+          className={`switch ${
+            !props.openSwitch ? "active" : null
+          } hover:bg-hover1 rounded-[10px] transition-all text-[16px] h-[35px] gap-[25px] w-full px-[16px] my-2 flex items-center`}
+        >
           <img height={27} width={27} src={Stickywall} alt="" />
           <p className="text-secondary">Board</p>
         </button>
-        <button className="hover:bg-hover1 rounded-[10px] transition-all text-[16px] h-[35px] gap-[25px] w-full px-[20px] my-2 flex items-center">
+        <button
+          onClick={() => props.handleSwitch(true)}
+          className={`switch ${
+            props.openSwitch ? "active" : null
+          } hover:bg-hover1 rounded-[10px] transition-all text-[16px] h-[35px] gap-[25px] w-full px-[20px] my-2 flex items-center`}
+        >
           <img height={22} width={22} src={Calendars} alt="" />
           <p className="text-secondary">Calendar</p>
         </button>
@@ -84,19 +137,20 @@ const Menu = (props: ProjectNameProps) => {
             ""
           )}
         </div>
-        <div className="h-[120px] overflow-y-auto">
+        <div className="h-[180px] overflow-y-auto">
           {/* Mapping Data Here */}
-          {board &&
+          {allBoardLoad ? (
+            <LoadData />
+          ) : (
+            board &&
             board.map((data) => (
               <button
                 key={data.id}
-                onClick={() =>
-                  props.showBoard(data.id, data.boardname, data.isStarred)
-                }
+                onClick={() => handleOpen(data.id, data.boardname, data.isStarred)}
                 className="text-[16px] h-[35px] w-full px-[20px] my-2 flex gap-4 items-center rounded-lg"
                 style={{
-                    background: props.id === data.id ? "#E0D8ED" : "",
-                    transition: "500ms"
+                  background: props.id === data.id ? "#E0D8ED" : "",
+                  transition: "500ms",
                 }}
               >
                 <div
@@ -108,7 +162,8 @@ const Menu = (props: ProjectNameProps) => {
                   {data.boardname}
                 </p>
               </button>
-            ))}
+            ))
+          )}
         </div>
       </div>
     </div>

@@ -4,7 +4,7 @@ import moment from "moment"
 
 export const createNote = async (req:any, res:any) => {
     try {  
-        const { title, description, listId, date, time, piority, userId } = req.body
+        const { title, description, listId, date, starttime, endtime, piority, userId } = req.body
         const formatdate = moment(date).format("YYYY-MM-DD")
         console.log(formatdate)
         const addnotes = await prisma.note.create({
@@ -12,7 +12,8 @@ export const createNote = async (req:any, res:any) => {
                 title: title,
                 description: description,
                 date: new Date(formatdate),
-                time: new Date(`${formatdate}T${time}`),
+                starttime: new Date(`${formatdate}T${starttime}`),
+                endtime: new Date(`${formatdate}T${endtime}`),
                 piority: piority,
                 listId: listId,
                 userId: userId
@@ -44,7 +45,7 @@ export const showNote = async (req:any, res:any) => {
 
 export const updateNote = async (req:any, res:any) => {
     try {  
-        const { title, description, listId, date, time, piority } = req.body
+        const { title, description, listId, date, starttime, endtime, piority } = req.body
         const noteId = req.params.noteId
         const updateNote = await prisma.note.update({
             where: {
@@ -54,7 +55,8 @@ export const updateNote = async (req:any, res:any) => {
                 title: title,
                 description: description,
                 date: new Date(date),
-                time: new Date(time),
+                starttime: new Date(starttime),
+                endtime: new Date(endtime),
                 piority: parseInt(piority),
                 listId: listId
             }

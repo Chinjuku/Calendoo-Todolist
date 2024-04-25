@@ -3,12 +3,12 @@ import { styled } from "@stitches/react";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import * as _ from "radash";
 import Add from "/svg/Add.svg";
-import { Droppable } from "../../primitives";
-import { DraggableElement } from "./DraggableElement";
+import { Droppable } from "../../../primitives";
+import { DraggableElement } from "../TaskList/DraggableElement";
 import { IColumn } from "@/composables/React.types";
-import { AddTaskList } from "./AddTaskList";
+import { AddTaskList } from "../TaskList/AddTaskList";
 import { MdDeleteForever } from "react-icons/md";
-import { DeleteTask } from "@/components/Project/DeleteTask";
+import { DeleteTask } from "@/components/Project/Task/DeleteTask";
 import { Modal } from "flowbite-react";
 
 export const Column: FC<IColumn> = ({ id, heading, elements }) => {
@@ -61,6 +61,7 @@ export const Column: FC<IColumn> = ({ id, heading, elements }) => {
               key={`draggable-element-${elmIndex}-${id}`}
               identifier={elm.id}
               content={elm.title}
+              element={elm}
             />
           ))}
           <DropPlaceholder />

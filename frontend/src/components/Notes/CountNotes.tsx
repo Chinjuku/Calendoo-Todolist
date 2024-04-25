@@ -4,6 +4,7 @@ import { countAllNotes, countToday } from "@/api/get/Notes/countAllNote";
 import { UserContext } from "@/contexts/api-get/UserContext";
 import All from "/svg/All.svg";
 import Today from "/svg/Today.svg";
+import { LoadData } from "../LoadData";
 
 export const CountNotes = () => {
   const { user } = useContext(UserContext);
@@ -34,7 +35,7 @@ export const CountNotes = () => {
           <p className="text-secondary">All Notes</p>
         </div>
         <p className="bg-hover1 px-2 py-1 rounded-[3px]">
-          {allNotesLoading ? "Loading..." : allNotesError ? "Error" : allnotes}
+          {allNotesLoading ? <LoadData /> : allNotesError ? "Error" : allnotes}
         </p>
       </div>
       <div className="text-[16px] h-[35px] w-full px-[20px] my-2 flex justify-between items-center">
@@ -43,7 +44,7 @@ export const CountNotes = () => {
           <p className="text-secondary">Today</p>
         </div>
         <p className="bg-hover1 px-2 py-1 rounded-[3px]">
-          {todayLoading ? "Loading..." : todayError ? "Error" : today}
+          {todayLoading ? <LoadData /> : todayError ? "Error" : today}
         </p>
       </div>
     </>

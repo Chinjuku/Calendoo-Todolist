@@ -9,10 +9,8 @@ import "react-datepicker/dist/react-datepicker.css";
 import TimeMaker from "../ui/TimeMaker";
 import { ListContext } from "@/contexts/api-get/ListContext";
 import { updateNote } from "@/api/post/Notes/updateNote";
-// import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export const UpdateNote = (props: UpdateNoteData) => {
-  //   const queryClient = useQueryClient()
   const { list } = useContext(ListContext);
   const [title, setTitle] = useState({ title: props.title, show: false });
   const [description, setDescription] = useState({
@@ -20,17 +18,26 @@ export const UpdateNote = (props: UpdateNoteData) => {
     show: false,
   });
   const [date, setDate] = useState<Date | null>(new Date(props.date)); // Use Date type for date state
-  const [time, setTime] = useState({
-    time: moment(props.time).format("HH:mm"),
+  const [starttime, setStartTime] = useState({
+    starttime: moment(props.starttime).format("HH:mm"),
+    show: false,
+  });
+  const [endtime, setEndTime] = useState({
+    endtime: moment(props.endtime).format("HH:mm"),
     show: false,
   });
   const [piority, setPiority] = useState({ piority: props.piority });
   const [listId, setlistId] = useState({ listId: props.list.id, show: false });
+  const [error, setError] = useState({
+    description: "",
+    time: ""
+  })
   const [formData, setFormData] = useState({
     title: props.title,
     description: props.description,
     date: props.date,
-    time: moment(props.time).format("HH:mm"),
+    starttime: moment(props.starttime).format("HH:mm"),
+    endtime: moment(props.endtime).format("HH:mm"),
     piority: props.piority,
     listId: props.list.id,
   });
@@ -43,8 +50,10 @@ export const UpdateNote = (props: UpdateNoteData) => {
       setTitle({ ...title, title: value });
     } else if (name === "description") {
       setDescription({ ...description, description: value });
-    } else if (name === "time") {
-      setTime({ ...time, time: value });
+    } else if (name === "starttime") {
+      setStartTime({ ...starttime, starttime: value });
+    } else if (name === "endtime") {
+      setEndTime({ ...endtime, endtime: value });
     } else if (name === "piority") {
       setPiority({ ...piority, piority: parseInt(value) });
     } else if (name === "listId") {
@@ -58,20 +67,30 @@ export const UpdateNote = (props: UpdateNoteData) => {
     setDate(selectedDate);
     setFormData((prevFormData) => ({ ...prevFormData, date: selectDate }));
   };
-  //   const mutation = useMutation({
-  //     mutationFn: async (formatDate: string) => {
-  //     await queryDate(userId, formatDate);
-  //     },
-  //     onSuccess: () => {
-  //       queryClient.invalidateQueries({ queryKey: ["changeNote"] });
-  //     },
-  //     onError: () => {
-  //       console.log("error");
-  //     },
-  //   });
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    const startMoment = moment(formData.starttime, "HH:mm");
+    const endMoment = moment(formData.endtime, "HH:mm");
+    const errors = {
+      description : "",
+      time : ""
+    };
+
+    if (formData.description.length < 10) {
+      errors.description = "Description must be at least 10 characters.";
+    }
+
+    if (startMoment.isAfter(endMoment)) {
+      errors.time = "Start time cannot be after end time";
+    }
+
+    if (errors.time.length > 0 || errors.description.length > 0) {
+      setError(errors);
+      return;
+    }
+
+    setError(errors);
     updateNote(formData, props.id);
     props.handleClose({});
   };
@@ -109,6 +128,7 @@ export const UpdateNote = (props: UpdateNoteData) => {
             showInputEle={description.show}
           />
         </p>
+        <span className="text-red-600">{error.description !== "" && error.description}</span>
         <p className="flex text-xl gap-2">
           List :
           <select
@@ -139,17 +159,30 @@ export const UpdateNote = (props: UpdateNoteData) => {
         <p className="flex text-xl gap-5 items-center">
           Time :
           <TimeMaker
-            name="time"
+            name="starttime"
             className={`text-[20px] h-[20px] mb-[-10px] min-w-[300px]`}
-            value={time.time}
+            value={starttime.starttime}
             handleChange={handleChange}
             handleDoubleClick={() => {
-              setTime({ ...time, show: true });
+              setStartTime({ ...starttime, show: true });
             }}
-            handleBlur={() => setTime({ ...time, show: false })}
-            showInputEle={time.show}
+            handleBlur={() => setStartTime({ ...starttime, show: false })}
+            showInputEle={starttime.show}
+          />
+          <p>-</p>
+          <TimeMaker
+            name="endtime"
+            className={`text-[20px] h-[20px] mb-[-10px] min-w-[300px]`}
+            value={endtime.endtime}
+            handleChange={handleChange}
+            handleDoubleClick={() => {
+              setEndTime({ ...endtime, show: true });
+            }}
+            handleBlur={() => setEndTime({ ...endtime, show: false })}
+            showInputEle={endtime.show}
           />
         </p>
+        <span className="text-red-600">{error.time !== "" && error.time}</span>
         <p className="flex text-xl gap-5 items-center">
           Piority :
           <select
@@ -160,7 +193,6 @@ export const UpdateNote = (props: UpdateNoteData) => {
             className="border-none bg-primary focus:bg-white"
           >
             {["1", "2", "3"].map((piority) => {
-              // if (piority != props.piority)
               return (
                 <option value={parseInt(piority)} key={piority}>
                   {piority}

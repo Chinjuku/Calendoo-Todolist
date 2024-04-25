@@ -23,7 +23,7 @@ export const createProject = async (project: string, color: string, userId: stri
                     " & Your color is: " +
                     color,
             });
-            window.location.reload()
+            // window.location.reload()
         }
         
     } catch (err) {

@@ -28,13 +28,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         });
         localStorage.setItem("token", response.data.token);
         // localStorage.setItem("token", response.data.refresh_token);
-        // const timeout =  60 * 60 * 10000;
-        // setTimeout(function() {
-        //     // Remove data from localStorage
-        //     localStorage.removeItem('token');
-        //     window.location.reload();
-        //     navigate("/auth")
-        // }, timeout);
+        const timeout =  60 * 60 * 10000;
+        setTimeout(function() {
+            localStorage.removeItem('token');
+            window.location.reload();
+            navigate("/auth")
+        }, timeout);
 
       } else {
         toast({

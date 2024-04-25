@@ -7,25 +7,12 @@ import Time from "/svg/Time.svg";
 import { useState } from "react";
 import AddNote from "./AddNote";
 import "react-datepicker/dist/react-datepicker.css";
-const monthNames = [
-  "January",
-  "February",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "August",
-  "September",
-  "October",
-  "November",
-  "December",
-];
+import { monthNames } from "@/composables/initial-data";
 import { CheckOpenNotes } from "@/composables/React.types";
 import { Modal } from "flowbite-react";
 import "@/css/notemenu.css";
 import { CountNotes } from "./CountNotes";
-import { AllLists } from "./AllLists";
+import { AllLists } from "./List/AllLists";
 
 const Menu = (props: CheckOpenNotes) => {
   const [openModal, setOpenModal] = useState(false);
@@ -44,13 +31,17 @@ const Menu = (props: CheckOpenNotes) => {
         </h1>
       </div>
       <div>
-        <div>
-            <p className="Second text-[20px] mb-5">Filter</p>
-            <div className="text-[16px] h-[35px] gap-[25px] w-full px-[16px] my-2 flex items-center">
-            <img height={40} width={40} src={Time} alt="" />
+        {props.openSwitch && (
+          <>
+            <div>
+              <p className="Second text-[20px] mb-5">Filter</p>
+              <div className="text-[16px] h-[35px] gap-[25px] w-full px-[16px] my-2 flex items-center">
+                <img height={40} width={40} src={Time} alt="" />
+              </div>
             </div>
-        </div>
-        <hr className="border border-secondary mx-[15px] my-[20px]" />
+            <hr className="border border-secondary mx-[15px] my-[20px]" />
+          </>
+        )}
         <CountNotes />
         <button
           onClick={() => props.handleSwitch(false)}

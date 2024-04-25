@@ -1,6 +1,6 @@
 // import { Link } from "react-router-dom"
 import logoButtom from "/svg/arrow-bottom.svg";
-import { useEffect, useContext } from "react";
+import { useEffect, useContext, useState } from "react";
 import { Link, Events, animateScroll as scroll, scrollSpy } from "react-scroll";
 import { UserContext } from "@/contexts/api-get/UserContext";
 import Logout from "@/components/auth/Logout";
@@ -8,6 +8,7 @@ import { AuthProvider } from "@/middleware/useAuth";
 import { LuLogIn } from "react-icons/lu";
 
 const Navbar = () => {
+  const [activeSection, setActiveSection] = useState("");
   const userContext = useContext(UserContext);
   useEffect(() => {
     scrollSpy.update();
@@ -16,16 +17,17 @@ const Navbar = () => {
       Events.scrollEvent.remove("end");
     };
   }, []);
-  const handleSetActive = (to: unknown) => {
-    // setActiveSection(to);
-    console.log(to);
+  const handleSetActive = (to: string) => {
+    setActiveSection(to);
   };
   const scrollToTop = () => {
     scroll.scrollToTop();
   };
-  //   const activeLinkStyles = {
-  //     borderBottom: "3px solid blue", // Change to your desired underline color
-  //   };
+  const activeLinkStyles = {
+    borderBottom: "3px solid #F4EEFF", // Change to your desired underline color
+    tasnsition: "border-bottom 500ms linear",
+    opacity: 1,
+  };
   return (
     <AuthProvider>
       <div className="laptop:h-[90px] w-full bg-secondary px-[67px] fixed z-[100] flex items-center justify-between">
@@ -45,7 +47,11 @@ const Navbar = () => {
                 offset={10}
                 duration={500}
                 onSetActive={handleSetActive}
-                // style={activeSection === "home" ? activeLinkStyles : {}}
+                style={
+                  activeSection === "home" || activeSection === ""
+                    ? activeLinkStyles
+                    : {}
+                }
               >
                 Home
               </Link>
@@ -56,10 +62,10 @@ const Navbar = () => {
                 to="about"
                 spy={true}
                 smooth={true}
-                offset={-120}
+                offset={0}
                 duration={500}
                 onSetActive={handleSetActive}
-                // style={activeSection === "about" ? activeLinkStyles : {}}
+                style={activeSection === "about" ? activeLinkStyles : {}}
               >
                 About
               </Link>
@@ -70,10 +76,10 @@ const Navbar = () => {
                 to="contacts"
                 spy={true}
                 smooth={true}
-                offset={10}
+                offset={0}
                 duration={500}
                 onSetActive={handleSetActive}
-                // style={activeSection === "contacts" ? activeLinkStyles : {}}
+                style={activeSection === "contacts" ? activeLinkStyles : {}}
               >
                 Contact
               </Link>
@@ -82,10 +88,14 @@ const Navbar = () => {
             {userContext.user ? (
               <>
                 <li>
-                  <details className="dropdown">
-                    <summary className="btn border-none text-primary text-[24px] bg-transparent mx-[-15px]">
+                  <div className="dropdown">
+                    <div
+                      tabIndex={0}
+                      role="button"
+                      className="btn border-none text-primary text-[24px] bg-transparent mx-[-15px]"
+                    >
                       Project <img src={logoButtom} alt="" />
-                    </summary>
+                    </div>
                     <ul className="p-2 shadow menu text-secondary bg-primary dropdown-content z-[1] rounded-box w-[150px]">
                       <li className="hover:bg-hover transition-all">
                         <a href="/notes">Notes</a>
@@ -94,7 +104,7 @@ const Navbar = () => {
                         <a href="/project">Project Tasks</a>
                       </li>
                     </ul>
-                  </details>
+                  </div>
                 </li>
                 <li>
                   <div className="dropdown">
@@ -103,15 +113,15 @@ const Navbar = () => {
                       role="button"
                       className="mt-3 flex items-center gap-3 bg-transparent"
                     >
-                      {userContext.user?.profile ? (
+                      {userContext.user && userContext.user.profile ? (
                         <>
                           <img
-                            src={userContext.user?.profile}
+                            src={userContext.user.profile}
                             className="h-[40px] w-[40px] rounded-[50%] bg-primary"
                             alt="User Avatar"
                           ></img>
                           <p className="text-primary text-[16px]">
-                            {userContext.user?.username}
+                            {userContext.user.username}
                           </p>
                           <img src={logoButtom} alt="" />
                         </>

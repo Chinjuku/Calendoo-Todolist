@@ -8,12 +8,12 @@ export const createTaskList = async (getdata: TaskListData, taskId: string) => {
         title: getdata.title,
         description: getdata.description,
         piority: getdata.piority,
+        date: getdata.date,
         taskId: taskId
     }
-    console.log(data);
     try {
         const res = await axios.post("http://localhost:8888/api/tasklist/create", data)
-        console.log(res.status)
+        // console.log(res.status)
         if (res.status === 200) {
             toast({
                 variant: "success",

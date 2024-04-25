@@ -5,7 +5,7 @@ export const showProjects = async (userId: string | undefined) => {
         if (userId) {
             const response = await axios.get(`http://localhost:8888/api/project/show/${userId}`);
             const data = response.data
-            console.log(data);
+            // console.log(data);
             if(response.status === 201) {
               return data
             } else {

@@ -9,11 +9,8 @@ export const createBoard = async (board: string, color: string, projectId: strin
         isStarred: false,
         projectId: projectId,
     }
-    console.log(data)
     try {
         const res = await axios.post("http://localhost:8888/api/board/create", data)
-        // .then(res => console.log(res.status))
-        console.log(res.data)
         if (res.status === 200) {
             toast({
                 variant: "success",
@@ -24,7 +21,7 @@ export const createBoard = async (board: string, color: string, projectId: strin
                     " & Your color is: " +
                     color,
             });
-            window.location.reload()
+            // window.location.reload()
         }
         
     } catch (err) {

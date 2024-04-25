@@ -29,9 +29,18 @@ export interface AddBoardProps {
 }
 
 // @/components/Project/DraggableElement.tsx
+type GetTaskList = {
+    id: string;
+    title: string
+    description: string
+    piority: number
+    setdate: Date
+    createAt: Date
+}
 export interface IDraggableElement {
     identifier: string;
     content: string;
+    element: GetTaskList
 }
 
 // @/components/Project/Column
@@ -42,6 +51,8 @@ export interface IElement {
     description: string;
     piority: number;
     taskId: string;
+    setdate: Date
+    createAt: Date
 }
 
 export interface IColumn {
@@ -59,7 +70,8 @@ export type UpdateNoteData = {
     title: string;
     description: string;
     date: string;
-    time: string;
+    starttime: string;
+    endtime: string;
     piority: number;
     list: {
         id: string;
@@ -88,7 +100,8 @@ export interface OpenModals {
     title: string;
     description: string;
     date: string;
-    time: string;
+    starttime: string;
+    endtime: string;
     piority: number;
     list: {
         id: string
@@ -99,4 +112,4 @@ export interface OpenModals {
 
 export type BoardProps = {
     id: string
-  }
+}

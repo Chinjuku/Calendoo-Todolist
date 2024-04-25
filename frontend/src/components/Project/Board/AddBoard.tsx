@@ -35,9 +35,9 @@ const AddBoard = (props: AddBoardProps) => {
     },
   });
 
-  // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof addBoardSchema>) {
     createBoard(values.boardname, values.color, projectId)
+    props.handleSetup(false)
   }
   return (
     <div className="absolute w-[295px] max-h-[600px] transition-all bg-secondary z-50 left-[20.5%] py-6 px-8 rounded-xl">

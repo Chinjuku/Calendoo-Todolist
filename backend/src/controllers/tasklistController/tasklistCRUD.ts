@@ -3,13 +3,14 @@ const prisma = new PrismaClient()
 
 export const createTaskList = async (req:any, res:any) => {
     try {
-        const { title, description, piority, taskId } = req.body
+        const { title, date, description, piority, taskId } = req.body
         const createtasklist = await prisma.taskList.create({
             data: {
                 title: title,
                 description: description,
                 piority: piority,
                 taskId: taskId,
+                setdate: date,
                 createdAt: new Date(),
             }
         })

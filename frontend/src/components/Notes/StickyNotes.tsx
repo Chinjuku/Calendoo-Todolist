@@ -21,6 +21,7 @@ import { MdKeyboardDoubleArrowUp } from "react-icons/md";
 import { OpenDelete, OpenModals } from "@/composables/React.types";
 import DatePicker from "react-datepicker";
 import { useQuery } from '@tanstack/react-query'
+import { LoadData } from "../LoadData";
 
 interface DateProps {
   date: string
@@ -102,6 +103,7 @@ const StickyNotes = () => {
     setNote(null);
     setAllNotes(allnote);
   };
+  console.log(allnote)
 
   return (
     <div className="py-[15px] px-[30px] w-[71%] relative">
@@ -129,7 +131,7 @@ const StickyNotes = () => {
       </div>
       <div className="grid grid-cols-3 p-2 pr-5 auto-rows-max gap-4 h-[88%] overflow-auto">
         {/* Mapping Query Data per day */}
-        { allnoteLoading || changeNoteLoading ? <div>Loading</div> : note != null && note.length != 0
+        { allnoteLoading || changeNoteLoading ? <LoadData /> : note != null && note.length != 0
           ? note.map((data) => (
               <div
                 key={data.id}
@@ -139,7 +141,7 @@ const StickyNotes = () => {
                 <h1 className="text-[28px]">{data.title}</h1>
                 <p>{data.description}</p>
                 <p className="absolute bottom-8 left-2">
-                  Time: {moment(data.time).format("HH:mm")}
+                  Time: {moment(data.starttime).format("HH:mm") + '-' + moment(data.endtime).format("HH:mm")}
                 </p>
                 <p className="absolute bottom-2 left-2">
                   Date: {moment(data.date).format("YYYY-MM-DD")}
@@ -183,7 +185,8 @@ const StickyNotes = () => {
                         }}
                         id={data.id}
                         date={data.date}
-                        time={data.time}
+                        starttime={data.starttime}
+                        endtime={data.endtime}
                         piority={data.piority}
                         userId={data.userId}
                       />
@@ -222,7 +225,7 @@ const StickyNotes = () => {
                 <h1 className="text-[28px]">{item.title}</h1>
                 <p>{item.description}</p>
                 <p className="absolute bottom-8 left-2">
-                  Time: {moment(item.time).format("HH:mm")}
+                  Time: {moment(item.starttime).format("HH:mm") + '-' + moment(item.endtime).format("HH:mm")}
                 </p>
                 <p className="absolute bottom-2 left-2">
                   Date: {moment(item.date).format("YYYY-MM-DD")}
@@ -266,7 +269,8 @@ const StickyNotes = () => {
                       }}
                       id={item.id}
                       date={item.date}
-                      time={item.time}
+                      starttime={item.starttime}
+                      endtime={item.endtime}
                       piority={item.piority}
                       userId={item.userId}
                     />

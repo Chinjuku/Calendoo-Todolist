@@ -19,7 +19,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Input } from "../ui/input";
+import { Input } from "../../ui/input";
 import { BooleanCheck } from "@/composables/React.types";
 import { ListSchema } from "@/composables/Validation";
 import { createList } from "@/api/post/createList";

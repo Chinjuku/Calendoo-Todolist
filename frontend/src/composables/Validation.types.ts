@@ -10,7 +10,8 @@ export type AddNoteData = {
     description: string;
     namelist: string;
     date: Date;
-    time: string;
+    starttime: string;
+    endtime: string;
     piority: number;
 }
 
@@ -50,4 +51,5 @@ export interface TaskListData {
     title: string
     description: string
     piority: number
+    date: Date
 }

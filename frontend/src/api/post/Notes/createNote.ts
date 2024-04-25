@@ -10,7 +10,8 @@ export const createNote = async (data: AddNoteData, userId: string | undefined) 
         title: data.title,
         description: data.description,
         date: data.date,
-        time: data.time,
+        starttime: data.starttime,
+        endtime: data.endtime,
         piority: data.piority,
         listId: data.namelist,
         userId: userId

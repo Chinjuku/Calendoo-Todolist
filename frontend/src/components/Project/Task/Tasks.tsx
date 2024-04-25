@@ -7,11 +7,12 @@ import { TiPlus } from "react-icons/ti";
 
 import { Column } from "@/components/Project";
 import { BoardProps, IElement } from "@/composables/React.types";
-import { AddTask } from "@/components/Project/AddTask";
+import { AddTask } from "@/components/Project/Task/AddTask";
 import { showTasks } from "@/api/get/Task/getTasks";
 import { showTaskLists } from "@/api/get/TaskList/getTaskLists";
-import { updateTaskList } from "@/api/post/TaskList/updateTaskList";
+import { moveTaskList } from "@/api/post/TaskList/updateTaskList";
 import { useQuery } from "@tanstack/react-query";
+import { LoadData } from "../../LoadData";
 
 export const DEFAULT_COLUMN = "backlog";
 interface TaskData {
@@ -33,7 +34,7 @@ export const Tasks = (props: BoardProps) => {
           if (over && over.id === elm.taskId) {
             return elm; // Don't update if dropped onto the same element
           }
-          updateTaskList(elementId, over?.id);
+          moveTaskList(elementId, over?.id);
         }
         return elm;
       });
@@ -42,13 +43,13 @@ export const Tasks = (props: BoardProps) => {
     [data, setData]
   );
 
-  const { data: tasks } = useQuery({
+  const { data: tasks, isLoading: taskLoad } = useQuery({
     queryKey: ["tasks", props.id],
     queryFn: async () => await showTasks(props.id),
     enabled: !!props.id,
     refetchInterval: 500
   });
-  const { data: taskLists } = useQuery({
+  const { data: taskLists, isLoading: tasklistLoad } = useQuery({
     queryKey: ["taskLists", props.id],
     queryFn: async () => await showTaskLists(props.id),
     enabled: !!props.id,
@@ -57,10 +58,6 @@ export const Tasks = (props: BoardProps) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // const [tasksResponse, taskListsResponse] = await Promise.all([
-        //   showTasks(props.id),
-        //   showTaskLists(props.id),
-        // ]);
         const task = tasks.map((task: { id: string; taskname: string }) => {
           return {
             taskId: task.id,
@@ -77,6 +74,7 @@ export const Tasks = (props: BoardProps) => {
             description: tasklist.description,
             craeteAt: tasklist.craeteAt,
             piority: tasklist.piority,
+            setdate: tasklist.setdate
           };
         });
         setColumn(task);
@@ -90,7 +88,8 @@ export const Tasks = (props: BoardProps) => {
   }, [tasks, taskLists]);
   return (
     <DndContext onDragEnd={handleOnDragEnd}>
-      <MainWrapper>
+      { taskLoad || tasklistLoad ? <LoadData /> :
+        <MainWrapper>
         {columns &&
           columns.map((column, columnIndex) => (
             <Column
@@ -123,6 +122,7 @@ export const Tasks = (props: BoardProps) => {
           </ul>
         </div>
       </MainWrapper>
+      }
     </DndContext>
   );
 };

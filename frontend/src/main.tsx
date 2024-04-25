@@ -7,12 +7,14 @@ import {
   QueryClient,
   QueryClientProvider,
 } from '@tanstack/react-query'
+import "react-big-calendar/lib/css/react-big-calendar.css";
 
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      refetchInterval : 1000,
+      refetchInterval : 2000,
       refetchOnWindowFocus: false,
+      staleTime: Infinity,
     },
   },
 })

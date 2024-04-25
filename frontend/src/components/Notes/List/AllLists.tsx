@@ -6,6 +6,7 @@ import Add from "/svg/Add.svg";
 import { countList } from "@/api/get/Notes/countAllNote";
 import { UserContext } from "@/contexts/api-get/UserContext";
 import { useQuery } from "@tanstack/react-query";
+import { LoadData } from "../../LoadData";
 
 interface CountList {
   count: number;
@@ -29,14 +30,14 @@ export const AllLists = () => {
       );
       return notesPerList;
     },
-    enabled :!!user?.id &&!!list?.length,
+    enabled : !!user?.id &&!!list?.length,
   });
 
   return (
     <div>
       <p className="Second text-[20px]">Lists</p>
       {isLoading ? (
-        <div>Loading...</div>
+        <LoadData />
       ) : (
         <div className="h-[120px] overflow-y-auto">
           {/* Mapping Data Here */}

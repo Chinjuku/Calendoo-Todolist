@@ -1,7 +1,7 @@
 // import App from '@/pages/App.tsx'
 // import Notes from '@/pages/Notes.tsx'
 import Project from '@/pages/Project.tsx'
-import ProjectTasks from '@/pages/ProjectTasks.tsx'
+// import ProjectTasks from '@/pages/ProjectTasks.tsx'
 import Error from '@/pages/Error.tsx'
 // import Authentication from '@/pages/Authentication.tsx'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
@@ -31,6 +31,14 @@ const App = React.lazy(() => {
     return Promise.all([
         import("@/pages/App.tsx"),
         new Promise(resolve => setTimeout(resolve, 1500))
+        ])
+        .then(([moduleExports]) => moduleExports);
+    });
+
+const ProjectTasks = React.lazy(() => {
+    return Promise.all([
+        import("@/pages/ProjectTasks.tsx"),
+        new Promise(resolve => setTimeout(resolve, 800))
         ])
         .then(([moduleExports]) => moduleExports);
     });

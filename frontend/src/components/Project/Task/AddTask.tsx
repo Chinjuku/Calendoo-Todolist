@@ -25,6 +25,7 @@ export const AddTask = (props: BoardProps) => {
   });
   function onSubmit(values: z.infer<typeof taskSchema>) {
     createTask(values.taskname, props.id)
+    form.reset()
   }
   return (
     <div className="flex flex-col py-6 px-4 gap-4">

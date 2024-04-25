@@ -132,13 +132,32 @@ const AddNote = (props: BoolNoteCheck) => {
                       </FormItem>
                     )}
                   />
+                  <div className="flex items-center gap-5">
+                  <h1 className="text-[28px]">Time :</h1>
                   <FormField
                     control={form.control}
-                    name="time"
+                    name="starttime"
                     render={({ field }) => (
                       <FormItem>
                         <div className="flex items-center gap-5">
-                          <h1 className="text-[28px]">Time :</h1>
+                          <input
+                            className="text-secondary font-bold rounded-[10px] py-2 px-4"
+                            type="time"
+                            value={field.value}
+                            onChange={field.onChange}
+                          />
+                          <h1>-</h1>
+                        </div>
+                        <FormMessage className="text-[12px]" />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="endtime"
+                    render={({ field }) => (
+                      <FormItem>
+                        <div className="flex items-center gap-5">
                           <input
                             className="text-secondary font-bold rounded-[10px] py-2 px-4"
                             type="time"
@@ -150,6 +169,7 @@ const AddNote = (props: BoolNoteCheck) => {
                       </FormItem>
                     )}
                   />
+                  </div>
                   <FormField
                     control={form.control}
                     name="piority"

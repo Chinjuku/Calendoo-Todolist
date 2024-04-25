@@ -48,6 +48,11 @@ export const ListSchema: ZodType<ListData> = z.object({
   }),
 });
 
+const isStartTimeBeforeEndTime = (startTime: string, endTime: string) => {
+  const startDate = new Date(`1970-01-01T${startTime}`);
+  const endDate = new Date(`1970-01-01T${endTime}`);
+  return startDate < endDate;
+};
 // @/components/Notes/AddNote.tsx
 export const AddNoteSchema: ZodType<AddNoteData> = z.object({
   title: z
@@ -56,15 +61,18 @@ export const AddNoteSchema: ZodType<AddNoteData> = z.object({
   description: z
     .string({ required_error: "Please require description." })
     .min(10, { message: "Description must be at least 10 characters." }),
-  // Use foreign key to get color!!!
   namelist: z.string({
     required_error: "Please select namelist.",
   }),
   date: z.date(),
-  time: z.string(),
+  starttime: z.string(),
+  endtime: z.string(),
   piority: z.number({
     required_error: "Please select Piority.",
   }),
+}).refine(data => isStartTimeBeforeEndTime(data.starttime, data.endtime), {
+  message: "Start time must be before end time.",
+  path: ["starttime", "endtime"],
 });
 
 // @/components/Project/AddBoard.tsx
@@ -111,4 +119,18 @@ export const AddTaskListSchema: ZodType<TaskListData> = z.object({
   piority: z.number({
     required_error: "Please select Piority.",
   }),
+  date: z.date()
+});
+
+export const UpdateTaskListSchema: ZodType<TaskListData> = z.object({
+  title: z
+    .string({ required_error: "Please require title." })
+    .min(2, { message: "Title must be at least 2 characters." }),
+  description: z
+    .string({ required_error: "Please require description." })
+    .min(10, { message: "Description must be at least 10 characters." }),
+  piority: z.number({
+    required_error: "Please select Piority.",
+  }),
+  date: z.date()
 });

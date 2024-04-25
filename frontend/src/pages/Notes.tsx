@@ -5,8 +5,9 @@ import { Toaster } from "@/components/ui/toaster";
 import StickyNotes from "@/components/Notes/StickyNotes";
 import { useState } from "react";
 import { UserContextProvider } from "@/contexts/api-get/UserContext";
-import Calendar from "@/components/Notes/Calendar";
+// import Calendar from "@/components/Notes/ControlCalendar";
 import { ListContextProvider } from "@/contexts/api-get/ListContext";
+import { NotesCalendar } from "@/components";
 
 const Notes = () => {
   const [openSwitch, setOpenSwitch] = useState(true);
@@ -30,7 +31,7 @@ const Notes = () => {
               handleSwitch={(bools) => setOpenSwitch(bools)}
               openSwitch={openSwitch}
             />
-            {openSwitch ? <StickyNotes /> : <Calendar />}
+            {openSwitch ? <StickyNotes /> : <NotesCalendar />}
           </div>
         </div>
       </ListContextProvider>
