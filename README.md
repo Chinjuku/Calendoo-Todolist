@@ -1,6 +1,6 @@
 # Calendoo-Todolist
-<hr>
-## This project about Notes and Project task (Kanban)
+
+## This project about Notes and Project task (Kanban) ##
 ### 1. Notes have:
 - Sticky Notes
 - See notes in Calendar
