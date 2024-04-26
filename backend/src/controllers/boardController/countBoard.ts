@@ -11,10 +11,30 @@ export const countBoards = async (req: any, res: any) => {
             _count : true,
         })
         res.status(200).send(countboard)
-        // console.log(countboard, projectId)
     } catch (err) {
         res.status(500).json({
             error: err
         })
+    }
+}
+
+export const countTasksInBoard = async (req: any, res: any) => {
+    try {
+        const projectId = req.params.projectId
+        const countTasksByBoard = await prisma.board.findMany({
+            where : {
+                projectId: projectId
+            },
+            include: {
+                _count : {
+                    select : {
+                        task : true
+                    }
+                }
+            }
+        });
+        res.status(200).send(countTasksByBoard);
+    } catch (err) {
+        res.status(400).send(err);
     }
 }

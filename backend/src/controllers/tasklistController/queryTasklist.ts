@@ -39,7 +39,6 @@ export const showAllTaskLists = async (req:any, res:any) => {
                 }
             },
         }).then((showtasklist) => res.status(200).send(showtasklist))
-        console.log(showtasklist)
     } catch (err) {
         return res.status(400).json(err)
     }

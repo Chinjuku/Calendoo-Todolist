@@ -3,6 +3,7 @@ import { AlertCircle } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { deleteNote } from "@/api/post/Notes/deleteNote";
+import { useQueryClient, useMutation } from "@tanstack/react-query";
 
 interface DeleteNote {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -11,9 +12,24 @@ interface DeleteNote {
 }
 
 export const DeleteNote = (props: DeleteNote) => {
+  const queryClient = useQueryClient()
+  const { mutate } = useMutation({ mutationFn : () => deleteNote(props.id), 
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["allnote"] })
+      await queryClient.invalidateQueries({ queryKey: ["changeNote"] })
+      await queryClient.invalidateQueries({ queryKey: ["dates"] })
+      await queryClient.invalidateQueries({ queryKey: ["allnotes"] })
+      await queryClient.invalidateQueries({ queryKey: ["today"] })
+      await queryClient.invalidateQueries({ queryKey: ["noteperList"] })
+      await queryClient.invalidateQueries({ queryKey: ["showallnote"] })
+      props.handleAlert(false);
+    },
+    onError: () => {
+      console.log("error");
+    }
+  });
     const onDelete = () => {
-        deleteNote(props.id)
-        props.handleAlert(false)    
+        mutate();  
     }
   return (
     <Alert variant="destructive" className="text-[26px] px-10 flex flex-col gap-1">

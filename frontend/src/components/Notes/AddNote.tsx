@@ -20,6 +20,7 @@ import { useContext } from "react";
 import { ListContext } from "@/contexts/api-get/ListContext";
 import { createNote } from "@/api/post/Notes/createNote";
 import { UserContext } from "@/contexts/api-get/UserContext";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const AddNote = (props: BoolNoteCheck) => {
   const { list } = useContext(ListContext)
@@ -27,10 +28,25 @@ const AddNote = (props: BoolNoteCheck) => {
   const form = useForm<z.infer<typeof AddNoteSchema>>({
     resolver: zodResolver(AddNoteSchema),
   });
+  const queryClient = useQueryClient()
+  const { mutate } = useMutation({ mutationFn : (data: z.infer<typeof AddNoteSchema>) => createNote(data, user?.id), 
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["allnote"] })
+      await queryClient.invalidateQueries({ queryKey: ["changeNote"] })
+      await queryClient.invalidateQueries({ queryKey: ["dates"] })
+      await queryClient.invalidateQueries({ queryKey: ["allnotes"] })
+      await queryClient.invalidateQueries({ queryKey: ["today"] })
+      await queryClient.invalidateQueries({ queryKey: ["noteperList"] })
+      await queryClient.invalidateQueries({ queryKey: ["showallnote"] })
+      props.checkClose(false)
+    },
+    onError: () => {
+      console.log("error");
+    }
+  });
   const onSubmit = (data: z.infer<typeof AddNoteSchema>) => {
     "use server"
-    props.checkClose(false)
-    createNote(data, user?.id)
+    mutate(data);
   };
   return (
     <div

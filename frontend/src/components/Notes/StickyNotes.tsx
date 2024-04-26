@@ -28,7 +28,7 @@ interface DateProps {
 }
 
 const StickyNotes = () => {
-  const date = useRef<DateProps[] | null>(null);
+  const date = useRef<DateProps[]>();
   const [note, setNote] = useState<NoteData[] | null>(null);
   const [allnotes, setAllNotes] = useState<NoteData[] | null>(null);
   const [openModals, setOpenModals] = useState<OpenModals>({});
@@ -40,13 +40,13 @@ const StickyNotes = () => {
   const toggleModal = (id: string) => {
     setOpenModals((prevState) => ({
       ...prevState,
-      [id]: !prevState[id], // Toggle the state for the specific note id
+      [id]: !prevState[id], 
     }));
   };
   const toggleAlert = (id: string) => {
     setAlert((prevState) => ({
       ...prevState,
-      [id]: !prevState[id], // Toggle the state for the specific note id
+      [id]: !prevState[id], 
     }));
   };
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -85,7 +85,6 @@ const StickyNotes = () => {
     if (!userId) return;
     const formatDate = moment(date).format("YYYY-MM-DD");
     const responseData = await queryDate(userId, formatDate);
-    console.log(responseData);
     setNote(responseData);
   };
   useEffect(() => {
@@ -103,7 +102,6 @@ const StickyNotes = () => {
     setNote(null);
     setAllNotes(allnote);
   };
-  console.log(allnote)
 
   return (
     <div className="py-[15px] px-[30px] w-[71%] relative">
@@ -130,8 +128,7 @@ const StickyNotes = () => {
         </div>
       </div>
       <div className="grid grid-cols-3 p-2 pr-5 auto-rows-max gap-4 h-[88%] overflow-auto">
-        {/* Mapping Query Data per day */}
-        { allnoteLoading || changeNoteLoading ? <LoadData /> : note != null && note.length != 0
+        { allnoteLoading || changeNoteLoading ? <LoadData /> : note?.length === 0 ? <div className="text-center flex justify-center text-6xl font-semibold text-secondary"><h1>No notes in this day</h1></div> : note != null && note.length != 0
           ? note.map((data) => (
               <div
                 key={data.id}
@@ -217,7 +214,7 @@ const StickyNotes = () => {
               </div>
             ))
           : allnotes != null
-          ? allnotes.map((item) => (
+          && allnotes.map((item) => (
               <div
                 className="rounded-[12px] w-full h-[196px] relative p-4"
                 style={{ backgroundColor: `${item.list.color}` }}
@@ -300,7 +297,7 @@ const StickyNotes = () => {
                 ) : null}
               </div>
             ))
-          : <div className="text-center flex justify-center text-6xl font-semibold text-secondary"><h1>No notes in this day</h1></div> }
+           }
       </div>
     </div>
   );

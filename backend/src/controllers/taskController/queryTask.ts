@@ -7,7 +7,6 @@ export const showTasks = async (req:any, res:any) => {
         const showtask = await prisma.task.findMany({
                 where: { boardId: boardId }
         }).then((showtask) => res.status(200).send(showtask))
-        console.log(showtask)
     } catch (err) {
         return res.status(400).json(err)
     }

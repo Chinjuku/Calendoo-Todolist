@@ -3,6 +3,7 @@ import { AlertCircle } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { deleteTask } from "@/api/post/Task/deleteTask";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 interface TaskProps {
     id: string;
@@ -10,9 +11,18 @@ interface TaskProps {
 }
 
 export const DeleteTask = (props: TaskProps) => {
+    const queryClient = useQueryClient()
+    const { mutate } = useMutation({
+        mutationFn: () => deleteTask(props.id),
+        onSuccess: async () => {
+            await queryClient.invalidateQueries({ queryKey : ["tasks"]})
+            await queryClient.invalidateQueries({ queryKey: ["countTask"] })
+            await queryClient.invalidateQueries({ queryKey: ["countTasksfromBoard"] })
+            props.setOpenAlert(false)  
+        },
+    })
     const onDelete = () => {
-        deleteTask(props.id)
-        props.setOpenAlert(false)    
+        mutate()   
     }
   return (
     <Alert variant="destructive" className="text-[26px] px-10 flex flex-col gap-1">

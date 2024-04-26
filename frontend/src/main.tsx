@@ -12,8 +12,7 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      refetchInterval : 2000,
-      refetchOnWindowFocus: false,
+      refetchOnWindowFocus: true,
       staleTime: Infinity,
     },
   },

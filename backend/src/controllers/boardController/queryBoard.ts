@@ -20,8 +20,6 @@ export const showFirstBoard = async (req:any, res:any) => {
             where: { projectId: projectId }
         })
         res.status(200).send(firstBoard)
-        // console.log(firstBoard)
-
     } catch (err) {
         return res.status(400).json(err)
     }

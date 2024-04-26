@@ -24,8 +24,21 @@ export const createBoard = async (req:any, res:any) => {
             }
         })
         res.status(200).send(board)
-        // console.log("Create board!")
     } catch (err) {
         return res.status(400).json(err)
+    }
+}
+
+export const deleteBoard = async (req: any, res: any) => {
+    try {
+        const boardId = req.params.boardId
+        const deleteboard = await prisma.board.delete({
+            where: {
+                id: boardId,
+            }
+        })
+        res.status(200).send(deleteboard)
+    } catch (err) {
+        res.status(400).json(err)
     }
 }

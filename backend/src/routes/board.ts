@@ -1,7 +1,7 @@
 import Router from "express"
-import { createBoard } from "../controllers/boardController/boardCRUD";
+import { createBoard, deleteBoard } from "../controllers/boardController/boardCRUD";
 import { showBoard, showFirstBoard, updateStar } from "../controllers/boardController/queryBoard";
-import { countBoards } from "../controllers/boardController/countBoard";
+import { countBoards, countTasksInBoard } from "../controllers/boardController/countBoard";
 
 const router = Router();
 
@@ -14,5 +14,9 @@ router.get("/showfirst/:projectId", showFirstBoard)
 router.get("/count/:projectId", countBoards)
 
 router.put("/updatestar", updateStar)
+
+router.get('/counttaskinboard/:projectId', countTasksInBoard)
+
+router.delete('/delete/:boardId', deleteBoard)
 
 export default router;

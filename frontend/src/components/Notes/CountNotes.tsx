@@ -12,9 +12,9 @@ export const CountNotes = () => {
 
   const { data: allnotes, isLoading: allNotesLoading, isError: allNotesError } = useQuery(
     {
-    queryKey: ["allnotes"],
-    queryFn: () => countAllNotes(userId),
-    enabled: !!userId, // Only fetch data if user ID is available
+      queryKey: ["allnotes"],
+      queryFn: () => countAllNotes(userId),
+      enabled: !!userId
     }
   );
 
@@ -22,7 +22,7 @@ export const CountNotes = () => {
     {
         queryKey: ["today"],
         queryFn: () => countToday(userId),
-        enabled: !!userId, // Only fetch data if user ID is available
+        enabled: !!userId
     }
   );
 

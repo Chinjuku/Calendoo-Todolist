@@ -23,7 +23,6 @@ export const createProject = async (req:any, res:any) => {
             }
         })
         res.status(200).send(project)
-        console.log("Create project!")
     } catch (err) {
         return res.status(401).json(err)
     }

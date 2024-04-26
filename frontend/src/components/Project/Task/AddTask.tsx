@@ -14,6 +14,7 @@ import { Input } from "@/components/ui/input";
 import { taskSchema } from "@/composables/Validation";
 import { BoardProps } from "@/composables/React.types";
 import { createTask } from "@/api/post/Task/createTask";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 
 export const AddTask = (props: BoardProps) => {
@@ -23,9 +24,18 @@ export const AddTask = (props: BoardProps) => {
       taskname: "",
     },
   });
+  const queryClient = useQueryClient()
+  const { mutate } = useMutation({
+    mutationFn: (data: string) => createTask(data, props.id),
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey : ["tasks"]})
+      await queryClient.invalidateQueries({ queryKey: ["countTask"] })
+      await queryClient.invalidateQueries({ queryKey: ["countTasksfromBoard"] })
+      form.reset()
+    },
+  })
   function onSubmit(values: z.infer<typeof taskSchema>) {
-    createTask(values.taskname, props.id)
-    form.reset()
+    mutate(values.taskname)
   }
   return (
     <div className="flex flex-col py-6 px-4 gap-4">

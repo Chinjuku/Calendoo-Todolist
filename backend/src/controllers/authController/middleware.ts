@@ -17,7 +17,6 @@ export const jwtRefreshTokenValidate = (req: any, res: any, next: any) => {
     try {
       if (!req.headers["authorization"]) return res.sendStatus(401)
       const token = req.headers["authorization"].replace("Bearer ", "")
-  
       refreshTokenVerify(token, req)
       next()
     } catch (error) {
@@ -30,7 +29,6 @@ import { refreshToken, verifyToken } from "../../utils/jwtHelper";
 export const authorization = (req: any, res: any, next: any) => {
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1];
-    // console.log(token)
     if (!token) return res.sendStatus(401);
     try {
         const result = verifyToken(token)

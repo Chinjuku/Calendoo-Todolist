@@ -1,33 +1,35 @@
 import { toast } from "@/components/ui/use-toast";
+import { addBoardSchema } from "@/composables/Validation";
 import axios from "axios";
+import { z } from "zod";
 
 
-export const createBoard = async (board: string, color: string, projectId: string | undefined) => {
+export const createBoard = async (values: z.infer<typeof addBoardSchema>, projectId: string | undefined) => {
     const data = {
-        boardname: board,
-        color: color,
+        boardname: values.boardname,
+        color: values.color,
         isStarred: false,
         projectId: projectId,
     }
+    console.log(data)
     try {
         const res = await axios.post("http://localhost:8888/api/board/create", data)
         if (res.status === 200) {
             toast({
                 variant: "success",
-                title: "You add list to Lists successfully.",
+                title: "You add board to Boards successfully.",
                 description:
-                    "Your name list is: " +
-                    board +
+                    "Your name Board is: " +
+                    data.boardname +
                     " & Your color is: " +
-                    color,
+                    data.color,
             });
-            // window.location.reload()
         }
         
     } catch (err) {
         toast({
             variant: "destructive",
-            title: board + " already add to Project!!",
+            title: data.boardname + " already add to Project!!",
         });
     }
 

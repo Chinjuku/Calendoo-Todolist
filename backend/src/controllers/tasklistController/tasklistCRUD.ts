@@ -33,7 +33,6 @@ export const updateTaskId = async (req:any, res:any) => {
             }
         })
         res.status(200).send(updatetasklist)
-        // console.log("Create task!")
     } catch (err) {
         return res.status(400).json(err)
     }
@@ -48,7 +47,6 @@ export const deleteTaskList = async (req: any, res: any) => {
             }
         })
         res.status(200).send(deletetasklist)
-        console.log("deleteTasklist")
     } catch (err) {
         res.status(400).json(err)
     }

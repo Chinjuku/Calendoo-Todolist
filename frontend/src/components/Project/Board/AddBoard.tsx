@@ -24,6 +24,7 @@ import { addBoardSchema } from "@/composables/Validation";
 import { colors } from "@/composables/initial-data";
 import { createBoard } from "@/api/post/Board/createBoard";
 import { useParams } from "react-router-dom";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const AddBoard = (props: AddBoardProps) => {
   const { projectId } = useParams();
@@ -34,10 +35,17 @@ const AddBoard = (props: AddBoardProps) => {
       color: "",
     },
   });
-
+  const queryClient = useQueryClient()
+  const { mutate } = useMutation({
+    mutationFn: (values: z.infer<typeof addBoardSchema>) => createBoard(values, projectId),
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey : ["countBoard"]})
+      await queryClient.invalidateQueries({ queryKey : ["allBoard"]})
+      props.handleSetup(false)
+    },
+  })
   function onSubmit(values: z.infer<typeof addBoardSchema>) {
-    createBoard(values.boardname, values.color, projectId)
-    props.handleSetup(false)
+    mutate(values)
   }
   return (
     <div className="absolute w-[295px] max-h-[600px] transition-all bg-secondary z-50 left-[20.5%] py-6 px-8 rounded-xl">

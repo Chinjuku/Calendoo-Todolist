@@ -15,6 +15,7 @@ import { UpdateTaskListSchema } from "@/composables/Validation";
 import { Textarea } from "../../ui/textarea";
 import { Calendar } from "lucide-react";
 import DatePicker from "react-datepicker";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 interface UpdateTaskListProps {
   id: string
@@ -27,10 +28,23 @@ export const UpdateTaskList = (props: UpdateTaskListProps) => {
   const form = useForm<z.infer<typeof UpdateTaskListSchema>>({
     resolver: zodResolver(UpdateTaskListSchema),
   });
+  const  queryClient = useQueryClient()
+  const { mutate } = useMutation({
+    mutationFn: async (data: z.infer<typeof UpdateTaskListSchema>) => 
+        await updateTaskList(data, props.id)
+    ,
+    onSuccess: async () => {
+        await queryClient.invalidateQueries({ queryKey: ["taskLists"] })
+        await queryClient.invalidateQueries({ queryKey : ["showalltask"]})
+        props.setopens("")
+    },
+    onError: () => {
+        console.log("error")
+    },
+  })
   const onSubmit = (data: z.infer<typeof UpdateTaskListSchema>) => {
     "use server";
-    updateTaskList(data, props.id);
-    props.setopens("");
+    mutate(data)
   };
   return (
     <div>
@@ -133,7 +147,6 @@ export const UpdateTaskList = (props: UpdateTaskListProps) => {
           </div>
         </form>
       </Form>
-      {/* {props.id} */}
     </div>
   );
 };

@@ -16,6 +16,7 @@ import { Button } from "@/components/ui/button";
 import { IoIosCloseCircle } from "react-icons/io";
 import DatePicker from "react-datepicker";
 import { Calendar } from "lucide-react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 interface AddTaskListProps {
   id: string;
@@ -26,10 +27,18 @@ export const AddTaskList = (props: AddTaskListProps) => {
   const form = useForm<z.infer<typeof AddTaskListSchema>>({
     resolver: zodResolver(AddTaskListSchema),
   });
+  const queryClient = useQueryClient()
+  const { mutate } = useMutation({
+    mutationFn: (data: z.infer<typeof AddTaskListSchema>) => createTaskList(data, props.id),
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey : ["taskLists"]})
+      await queryClient.invalidateQueries({ queryKey : ["showalltask"]})
+      props.setOpen(false)
+    },
+  })
   const onSubmit = (data: z.infer<typeof AddTaskListSchema>) => {
     "use server";
-    createTaskList(data, props.id);
-    props.setOpen(false);
+    mutate(data)
   };
   return (
     <div className="max-h-[600px] rounded-md mt-2 w-64 py-7 px-3 bg-primary1 items-center flex justify-center mx-5 relative">

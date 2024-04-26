@@ -11,7 +11,7 @@ import { AddTask } from "@/components/Project/Task/AddTask";
 import { showTasks } from "@/api/get/Task/getTasks";
 import { showTaskLists } from "@/api/get/TaskList/getTaskLists";
 import { moveTaskList } from "@/api/post/TaskList/updateTaskList";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { LoadData } from "../../LoadData";
 
 export const DEFAULT_COLUMN = "backlog";
@@ -23,37 +23,48 @@ interface TaskData {
 export const Tasks = (props: BoardProps) => {
   const [columns, setColumn] = useState<TaskData[]>([]);
   const [data, setData] = useState<IElement[]>([]);
-
+  const  queryClient = useQueryClient()
+  const { mutate } = useMutation({
+    mutationFn: async (data: { elementId: string; overId?: string | undefined }) => {
+      const { elementId, overId } = data;
+      await moveTaskList(elementId, overId);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["taskLists"] })
+    },
+    onError: () => {
+        console.log("error")
+    },
+  })
   const handleOnDragEnd = useCallback(
     ({ active, over }: DragEndEvent) => {
       const elementId = active.id;
       const deepCopy = [...data];
-      console.log(deepCopy, elementId, over);
       const updatedState = deepCopy.map((elm): IElement => {
         if (elm.id === elementId) {
           if (over && over.id === elm.taskId) {
-            return elm; // Don't update if dropped onto the same element
+            return elm;
           }
-          moveTaskList(elementId, over?.id);
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          mutate({ elementId, overId: over?.id });
         }
         return elm;
       });
       setData(updatedState);
     },
-    [data, setData]
+    [data, setData, mutate]
   );
 
   const { data: tasks, isLoading: taskLoad } = useQuery({
     queryKey: ["tasks", props.id],
     queryFn: async () => await showTasks(props.id),
-    enabled: !!props.id,
-    refetchInterval: 500
+    enabled: !!props.id
   });
   const { data: taskLists, isLoading: tasklistLoad } = useQuery({
     queryKey: ["taskLists", props.id],
     queryFn: async () => await showTaskLists(props.id),
     enabled: !!props.id,
-    refetchInterval: 500,
   });
   useEffect(() => {
     const fetchData = async () => {

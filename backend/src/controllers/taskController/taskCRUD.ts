@@ -26,7 +26,6 @@ export const deleteTask = async (req: any, res: any) => {
             }
         })
         res.status(200).send(deletetasklist)
-        console.log("deleteTask")
     } catch (err) {
         res.status(400).json(err)
     }

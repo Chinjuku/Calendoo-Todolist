@@ -19,7 +19,6 @@ export const showDateNote = async (req:any, res:any) => {
                 list: true
             }
         })
-        // console.log(notes)
         return res.status(200).json(notes)
     } catch (err) {
         return res.status(401).send(err)

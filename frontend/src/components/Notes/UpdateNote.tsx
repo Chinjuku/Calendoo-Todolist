@@ -9,6 +9,17 @@ import "react-datepicker/dist/react-datepicker.css";
 import TimeMaker from "../ui/TimeMaker";
 import { ListContext } from "@/contexts/api-get/ListContext";
 import { updateNote } from "@/api/post/Notes/updateNote";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+
+interface FormData {
+  title: string
+  description: string
+  date: string
+  starttime: string
+  endtime: string
+  piority: number
+  listId: string
+}
 
 export const UpdateNote = (props: UpdateNoteData) => {
   const { list } = useContext(ListContext);
@@ -67,7 +78,22 @@ export const UpdateNote = (props: UpdateNoteData) => {
     setDate(selectedDate);
     setFormData((prevFormData) => ({ ...prevFormData, date: selectDate }));
   };
-
+  const queryClient = useQueryClient()
+  const { mutate } = useMutation({ mutationFn : (formData: FormData) => updateNote(formData, props.id),
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["allnote"] })
+      await queryClient.invalidateQueries({ queryKey: ["changeNote"] })
+      await queryClient.invalidateQueries({ queryKey: ["dates"] })
+      await queryClient.invalidateQueries({ queryKey: ["allnotes"] })
+      await queryClient.invalidateQueries({ queryKey: ["today"] })
+      await queryClient.invalidateQueries({ queryKey: ["noteperList"] })
+      await queryClient.invalidateQueries({ queryKey: ["showallnote"] })
+      props.handleClose({});
+    },
+    onError: () => {
+      console.log("error");
+    }
+  });
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const startMoment = moment(formData.starttime, "HH:mm");
@@ -91,8 +117,7 @@ export const UpdateNote = (props: UpdateNoteData) => {
     }
 
     setError(errors);
-    updateNote(formData, props.id);
-    props.handleClose({});
+    mutate(formData)
   };
 
   return (

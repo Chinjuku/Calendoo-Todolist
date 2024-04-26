@@ -19,7 +19,6 @@ export const createNote = async (req:any, res:any) => {
                 userId: userId
             }
         }).then((addnotes) => res.status(200).json(addnotes))
-        
     } catch (err) {
         console.error(err);
         return res.status(401).send(err)

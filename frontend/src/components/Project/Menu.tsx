@@ -9,11 +9,14 @@ import AddBoard from "./Board/AddBoard";
 import "react-datepicker/dist/react-datepicker.css";
 import { showBoards } from "@/api/get/Board/getBoard";
 import { useParams } from "react-router-dom";
-import { countBoards } from "@/api/get/Board/countBoards";
+import { countBoards, countTasksInBoard } from "@/api/get/Board/countBoards";
 import { useQuery } from "@tanstack/react-query";
 import { countTasks } from "@/api/get/Task/countTasks";
 import { LoadData } from "../LoadData";
+import { RiDeleteBackFill } from "react-icons/ri";
 import "@/css/projectmenu.css"
+import { Modal } from "flowbite-react";
+import { DeleteBoard } from "./Board/DeleteBoard";
 
 interface ProjectNameProps {
   projectname: string;
@@ -29,13 +32,19 @@ interface BoardData {
   isStarred: boolean;
   projectId: string;
 }
+interface TaskCountinBoard {
+  id : string;
+  count: number;
+}
 
 const Menu = (props: ProjectNameProps) => {
   const { projectId } = useParams();
-  const [board, setBoard] = useState<BoardData[] | null>(null);
+  const [board, setBoard] = useState<BoardData[]>([]);
   const [boardCount, setBoardCount] = useState<number>(0);
   const [taskCount, setTaskCount] = useState<number>(0);
   const [openBoard, setOpenBoard] = useState(false);
+  const [taskCountBoard, setTaskCountBoard] = useState<TaskCountinBoard[]>([])
+  const [openDelete, setOpenDelete] = useState(false);
   const pId = projectId ?? "";
   const { data: countTask, isLoading: countTaskLoad } = useQuery({
     queryKey: ["countTask", pId],
@@ -61,6 +70,18 @@ const Menu = (props: ProjectNameProps) => {
     },
     enabled: !!pId,
   });
+  const { data: countTasksfromBoard, isLoading: countTasksfromBoardLoad } = useQuery({
+    queryKey: ["countTasksfromBoard", pId],
+    queryFn: async () => {
+      const result = await countTasksInBoard(pId);
+      return result.map((task: { id: string; _count: { task: number; }; }) => {
+        return ({
+          id: task.id,
+          count: task._count.task
+        })});
+    },
+    enabled: !!pId,
+  });
 
   useEffect(() => {
     if (countTask) {
@@ -72,7 +93,10 @@ const Menu = (props: ProjectNameProps) => {
     if (allBoard) {
       setBoard(allBoard);
     }
-  }, [countTask, countBoard, allBoard]);
+    if (countTasksfromBoard) {
+      setTaskCountBoard(countTasksfromBoard);
+    }
+  }, [countTask, countBoard, allBoard, countTasksfromBoard]);
   function handleOpen(id: string, boardname: string, isStarred: boolean) {
     props.showBoard(id, boardname, isStarred)
     props.handleSwitch(false);
@@ -138,31 +162,48 @@ const Menu = (props: ProjectNameProps) => {
           )}
         </div>
         <div className="h-[180px] overflow-y-auto">
-          {/* Mapping Data Here */}
-          {allBoardLoad ? (
+          {allBoardLoad || countTasksfromBoardLoad ? (
             <LoadData />
           ) : (
             board &&
             board.map((data) => (
-              <button
-                key={data.id}
-                onClick={() => handleOpen(data.id, data.boardname, data.isStarred)}
-                className="text-[16px] h-[35px] w-full px-[20px] my-2 flex gap-4 items-center rounded-lg"
-                style={{
-                  background: props.id === data.id ? "#E0D8ED" : "",
-                  transition: "500ms",
-                }}
-              >
-                <div
-                  key={data.id}
-                  className="h-[25px] w-[26px]"
-                  style={{ background: `${data.color}` }}
-                ></div>
-                <p key={data.id} className="text-secondary">
-                  {data.boardname}
-                </p>
-              </button>
-            ))
+              <div key={data.id}>
+                  <button
+                      key={data.id}
+                      onClick={() => handleOpen(data.id, data.boardname, data.isStarred)}
+                      className="relative text-[16px] h-[35px] w-full px-[20px] my-2 flex gap-4 items-center rounded-lg"
+                      style={{
+                          background: props.id === data.id ? "#E0D8ED" : "",
+                          transition: "500ms",
+                      }}
+                  >
+                      <div
+                          className="h-[25px] w-[26px]"
+                          style={{ background: `${data.color}` }}
+                      ></div>
+                      <p className="text-secondary">{data.boardname}</p>
+                      {/* Conditionally render a button based on the count of tasks */}
+                      {taskCountBoard.find((item) => item.id === data.id)?.count === 0 && (
+                        <>
+                          <button onClick={() => setOpenDelete(true)} className="absolute z-20 right-2">
+                            <RiDeleteBackFill />
+                          </button>
+                          <Modal
+                              show={openDelete} size={"3xl"} onClose={() => setOpenDelete(false)}
+                          >
+                            <Modal.Body>
+                              <DeleteBoard
+                                id={data.id}
+                                setOpenDelete={(bools) => setOpenDelete(bools)}
+                              />
+                            </Modal.Body>
+                          </Modal>
+                        </>
+                      )}
+                  </button>
+                  
+              </div>
+          ))
           )}
         </div>
       </div>

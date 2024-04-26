@@ -26,15 +26,29 @@ import { createList } from "@/api/post/createList";
 import { useContext } from "react";
 import { UserContext } from "@/contexts/api-get/UserContext";
 import { colors } from "@/composables/initial-data";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const AddList = (props: BooleanCheck) => {
   const userContext = useContext(UserContext);
   const form = useForm<z.infer<typeof ListSchema>>({
     resolver: zodResolver(ListSchema),
   });
+  const queryClient = useQueryClient();
+  const { mutate } = useMutation({
+    mutationFn: (data: z.infer<typeof ListSchema>) =>
+      createList(data, userContext.user?.id),
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["noteperList"] });
+      await queryClient.invalidateQueries({ queryKey: ["alllists"] });
+      props.handleClick(false);
+    },
+    onError: () => {
+      console.log("error");
+    },
+  });
   const onSubmit = (data: z.infer<typeof ListSchema>) => {
-    props.handleClick(false);
-    createList(data.namelist, data.color, userContext.user?.id);
+    "use server";
+    mutate(data);
   };
   return (
     <div className="absolute bottom-[150px] left-[250px] max-h-[333px] w-[230px] z-10 bg-secondary text-white py-6 pb-10 px-5 rounded-[20px]">
