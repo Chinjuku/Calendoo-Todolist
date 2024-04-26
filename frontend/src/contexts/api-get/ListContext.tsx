@@ -35,7 +35,6 @@ export const ListContextProvider = ({ children }: ListContextProviderProps) => {
             setList(alllists)
         }
     }, [alllists]);
-    console.log(list)
     return (
         <UserContextProvider>
             <ListContext.Provider value={{ list, setList }}>
